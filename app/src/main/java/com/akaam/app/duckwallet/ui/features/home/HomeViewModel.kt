@@ -21,9 +21,10 @@ class HomeViewModel @Inject constructor(
     val tokenList = _tokenList.asStateFlow()
 
 
+    var isInitCompose = false
     init {
+        isInitCompose = true
         fillTokenList()
-
     }
 
 
@@ -61,23 +62,33 @@ class HomeViewModel @Inject constructor(
     }
     fun onTopMenuClick(){
         if(uiState.value==HomeUiState.TopMenuIsShowing){
-            resetUiState()
+            resetUiState(false)
         }
         else{
             _uiState.value = HomeUiState.TopMenuIsShowing
         }
     }
 
-    fun resetUiState() {
-        _uiState.value = HomeUiState.Nothing
+    fun resetUiState(isFirstDialogShow:Boolean) {
+        if(isFirstDialogShow){
+
+            _uiState.value = HomeUiState.FirstTimeVisitTour
+        }
+        else{
+            _uiState.value = HomeUiState.Nothing
+
+        }
     }
 
     fun showCreateDialog() {
         _uiState.value = HomeUiState.WalletCreated
+        isInitCompose = false
     }
 
     fun showImportDialog() {
         _uiState.value = HomeUiState.WalletImported
+        isInitCompose = false
+
     }
 }
 

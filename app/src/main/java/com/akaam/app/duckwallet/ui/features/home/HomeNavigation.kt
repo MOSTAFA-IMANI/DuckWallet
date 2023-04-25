@@ -34,7 +34,7 @@ fun NavGraphBuilder.homeScreen(
             navigateToBuyToken=navigateToBuyToken,
             onFailureOccurred = onFailureOccurred,
             onMenuItemClick = onMenuItemClick,
-                    homeSourceNavigationOptions=homeSourceNavigationOptions
+            homeSourceNavigationOptions=homeSourceNavigationOptions
 
         )
     }

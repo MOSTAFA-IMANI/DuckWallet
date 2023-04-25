@@ -71,7 +71,7 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
+        Spacer(modifier = Modifier.height(20.dp))
         ClickableText(stringResource(id = R.string.profile_wallet_name),navigateToWalletName)
         ClickableText(stringResource(id = R.string.profile_change_wallet),navigateToChangeWallet)
         ClickableText(stringResource(id = R.string.profile_change_password),navigateToChangePassword)
@@ -84,15 +84,15 @@ fun WelcomeScreen(
     }
 
     when (uiState) {
-        ProfileUiState.NavigateToBackupMnemonic -> TODO()
-        ProfileUiState.NavigateToBackupPK -> TODO()
-        ProfileUiState.NavigateToChangeAvatar -> TODO()
-        ProfileUiState.NavigateToChangePassword -> TODO()
-        ProfileUiState.NavigateToChangeWallet -> TODO()
-        ProfileUiState.NavigateToDeleteWallet -> TODO()
-        ProfileUiState.NavigateToLockedByDefault -> TODO()
-        ProfileUiState.NavigateToWalletName -> TODO()
-        ProfileUiState.Nothing -> TODO()
+        ProfileUiState.NavigateToBackupMnemonic ->{}
+        ProfileUiState.NavigateToBackupPK ->{}
+        ProfileUiState.NavigateToChangeAvatar ->{}
+        ProfileUiState.NavigateToChangePassword ->{}
+        ProfileUiState.NavigateToChangeWallet ->{}
+        ProfileUiState.NavigateToDeleteWallet ->{}
+        ProfileUiState.NavigateToLockedByDefault ->{}
+        ProfileUiState.NavigateToWalletName ->{}
+        ProfileUiState.Nothing ->{}
     }
 }
 

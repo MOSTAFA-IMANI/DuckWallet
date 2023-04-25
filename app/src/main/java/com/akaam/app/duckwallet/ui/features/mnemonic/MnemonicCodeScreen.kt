@@ -41,6 +41,8 @@ fun MnemonicCodeRoute(
         resetUiState = viewModel::resetUiState,
         modifier = modifier,
     )
+
+
 }
 
 @Composable
@@ -66,9 +68,7 @@ internal fun MnemonicCodeScreen(
                     Log.d(TAG, "asImageBitmap: $it")
                     Image(bitmap =it , contentDescription ="" )
                 }
-                FlatButton(
-                    modifier = Modifier.wrapContentWidth().wrapContentHeight(),
-                    onClick = { resetUiState()}, text = stringResource(id = R.string.ok_button_title))
+
             }
         }
         else{

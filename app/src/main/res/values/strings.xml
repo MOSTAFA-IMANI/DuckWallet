@@ -66,7 +66,7 @@
     <string name="congratulations">CONGRATULATIONS</string>
     <string name="wallet_import_message_description">Your wallet was successfully imported</string>
     <string name="wallet_create_message_description">Your wallet was successfully created</string>
-    <string name="profile_wallet_name">wallet Name</string>
+    <string name="profile_wallet_name">Wallet Name</string>
     <string name="profile_change_wallet">Change Wallet</string>
     <string name="profile_change_password">Change Password</string>
     <string name="profile_change_avatar">Change Avatar</string>

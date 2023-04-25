@@ -51,7 +51,6 @@ private val mainWalletBoxHeight = 200.dp
 
 @Composable
 fun HomeRoute(
-
     onFailureOccurred: @Composable (Throwable) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToSendToken: () -> Unit,
@@ -62,6 +61,7 @@ fun HomeRoute(
     onMenuItemClick: (HomeMenuItem) -> Unit,
     homeSourceNavigationOptions: HomeSourceNavigationOptions?
 ) {
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val tokenList by viewModel.tokenList.collectAsStateWithLifecycle()
 
@@ -77,17 +77,20 @@ fun HomeRoute(
         tokenList = tokenList,
         onMenuItemClick=onMenuItemClick,
         onDialogDismiss = viewModel::resetUiState,
-        homeSourceNavigationOptions=homeSourceNavigationOptions
     )
-    when(homeSourceNavigationOptions){
-        HomeSourceNavigationOptions.FromCreatingWallet -> {
-            viewModel.showCreateDialog()
-        }
-        HomeSourceNavigationOptions.FromImportingWallet -> {
-            viewModel.showImportDialog()
-        }
-        else->{
 
+    if(uiState==HomeUiState.Nothing&&viewModel.isInitCompose){
+        when(homeSourceNavigationOptions){
+            HomeSourceNavigationOptions.FromCreatingWallet -> {
+                viewModel.showCreateDialog()
+
+            }
+            HomeSourceNavigationOptions.FromImportingWallet -> {
+                viewModel.showImportDialog()
+            }
+            else->{
+                // not first time visit
+            }
         }
     }
 }
@@ -96,9 +99,7 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-
     onFailureOccurred: @Composable (Throwable) -> Unit,
-
     navigateToBuyToken: () -> Unit,
     navigateToStakeToken: () -> Unit,
     navigateToSwapToken: () -> Unit,
@@ -107,10 +108,7 @@ fun HomeScreen(
     tokenList: List<TokenInfo>,
     onMenuClick: () -> Unit,
     onMenuItemClick: (HomeMenuItem) -> Unit,
-    onDialogDismiss: () -> Unit,
-    homeSourceNavigationOptions: HomeSourceNavigationOptions?,
-
-    ) {
+    onDialogDismiss: (Boolean) -> Unit, ) {
     var isMenuShowing by remember {
         mutableStateOf(false)
     }
@@ -209,7 +207,7 @@ fun HomeScreen(
 
 
         if(isEntranceDialogShowing){
-            DialogBoxEntranceCongratulations(onDismiss = onDialogDismiss, descriptionText = entranceMessage)
+            DialogBoxEntranceCongratulations(onDismiss ={onDialogDismiss.invoke(true)} , descriptionText = entranceMessage)
         }
     }
 
@@ -248,6 +246,10 @@ fun HomeScreen(
         HomeUiState.WalletImported -> {
             isEntranceDialogShowing= true
             entranceMessage = stringResource(id = R.string.wallet_import_message_description)
+        }
+        HomeUiState.FirstTimeVisitTour -> {
+            isEntranceDialogShowing= false
+            // show tutorial for first time
         }
     }
 }

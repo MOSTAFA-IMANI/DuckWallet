@@ -2,8 +2,11 @@ package com.akaam.app.duckwallet.ui.features.createwallet
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -155,39 +158,42 @@ internal fun CreateWalletScreen(
     isWeakPassWord: MutableState<Boolean>,
 
     ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
-        CreateWalletInputs(
-            uiState = uiState,
-            walletName = walletName,
-            password = password,
-            isWeakPassWord = isWeakPassWord,
-            passwordConfirm = passwordConfirm,
-            onUsernameChanged = onWalletNameChanged,
-            onPasswordChanged = onPasswordChanged,
-            onPasswordConfirmChanged = onPasswordConfirmChanged
-        )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        Spacer(modifier = Modifier.height(12.dp))
+            CreateWalletInputs(
+                walletName = walletName,
+                password = password,
+                isWeakPassWord = isWeakPassWord,
+                passwordConfirm = passwordConfirm,
+                onUsernameChanged = onWalletNameChanged,
+                onPasswordChanged = onPasswordChanged,
+                onPasswordConfirmChanged = onPasswordConfirmChanged
+            )
 
 
-       MainButton(onClick = { onNextStepClicked.invoke(walletName,password,passwordConfirm) },
-           text = stringResource(id = R.string.next_step),
-           isTheMainBottomButton = true,
-           isSecondory =true )
-        BottomSpacer()
-    }
+            Spacer(modifier = Modifier.height(12.dp))
+
+
+            MainButton(onClick = { onNextStepClicked.invoke(walletName,password,passwordConfirm) },
+                text = stringResource(id = R.string.next_step),
+                isTheMainBottomButton = true,
+                isSecondory =true )
+            BottomSpacer()
+        }
+
 
 
 }
 
 @Composable
-fun ColumnScope.CreateWalletInputs(
-    uiState: CreateWalletUiState,
+fun CreateWalletInputs(
     walletName: String,
     password: String,
     passwordConfirm: String,
@@ -199,7 +205,6 @@ fun ColumnScope.CreateWalletInputs(
     ) {
     Column(
         modifier = Modifier
-            .weight(1f)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

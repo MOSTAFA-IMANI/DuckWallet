@@ -172,7 +172,13 @@ fun MenuButton(
 
 @Composable
 fun ClickableText(text:String, onclick:()->Unit,color:Color = MaterialTheme.colors.primary){
-    Text(modifier = Modifier.clickable { onclick.invoke() },text = text, color = color)
+    Text(modifier =
+    Modifier.clickable { onclick.invoke() }
+        .fillMaxWidth()
+        .padding(vertical = 8.dp, horizontal = 16.dp),
+        text = text,
+        color = color,
+        textAlign = TextAlign.Start)
 }
 
 @Preview

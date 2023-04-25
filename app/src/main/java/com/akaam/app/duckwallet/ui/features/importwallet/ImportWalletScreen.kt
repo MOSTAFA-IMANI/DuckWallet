@@ -3,6 +3,9 @@ package com.akaam.app.duckwallet.ui.features.importwallet
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
+import com.akaam.app.duckwallet.ui.features.createwallet.CreateWalletInputs
 import com.akaam.app.duckwallet.ui.theme.*
 import com.akaam.app.duckwallet.ui.theme.Typography
 
@@ -80,7 +84,7 @@ internal fun CreateWalletScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        CreateWalletInputs(
+        ImportWalletInputs(
             uiState = uiState,
             walletName = walletName,
             onWalletNameChanged = onWalletNameChanged,
@@ -102,7 +106,7 @@ internal fun CreateWalletScreen(
 }
 
 @Composable
-fun ColumnScope.CreateWalletInputs(
+fun ImportWalletInputs(
     uiState: ImportWalletUiState,
     walletName: String,
     onWalletNameChanged: (username: String) -> Unit,
@@ -112,7 +116,6 @@ fun ColumnScope.CreateWalletInputs(
     ) {
     Column(
         modifier = Modifier
-            .weight(1f)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -128,8 +131,6 @@ fun ColumnScope.CreateWalletInputs(
         )
         Spacer(modifier = Modifier.padding(5.dp))
         MnemonicCode(codeList = mnemonicCodeList, onValueChange = {text, index -> onMnemonicInputChange(text,index) } )
-
-
         Spacer(modifier = Modifier.padding(5.dp))
     }
 

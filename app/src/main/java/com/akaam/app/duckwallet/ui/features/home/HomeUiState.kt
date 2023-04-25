@@ -10,6 +10,10 @@ sealed interface HomeUiState {
         override val isLoading: Boolean
             get() = false
     }
+    object FirstTimeVisitTour : HomeUiState {
+        override val isLoading: Boolean
+            get() = false
+    }
 
     object Loading : HomeUiState {
         override val isLoading: Boolean

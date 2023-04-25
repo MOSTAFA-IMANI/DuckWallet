@@ -33,12 +33,11 @@ class VerifyMnemonicViewModel @Inject constructor(
         val serverListOfMnemonicCode = mutableListOf<String>()
 
         repeat(MNEMONIC_LIST_SIZE){
-            serverListOfMnemonicCode.add("Server$it")
+            serverListOfMnemonicCode.add("word$it")
         }
         correctCodeList= serverListOfMnemonicCode
 
         inputMnemonicCodeList.value = shuffledOrderList(correctCodeList)
-        inputMnemonicCodeList.value =serverListOfMnemonicCode
         selectedMnemonicCodeList.value = emptyListForCode(MNEMONIC_LIST_SIZE)
         resetUiState()
     }

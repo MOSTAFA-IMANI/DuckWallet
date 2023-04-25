@@ -37,7 +37,7 @@ class MnemonicViewModel @Inject constructor(
 
         val serverListOfMnemonicCode = mutableListOf<String>()
         repeat(12){
-            serverListOfMnemonicCode.add("Server$it")
+            serverListOfMnemonicCode.add("word$it")
         }
         mnemonicCodeList.value =serverListOfMnemonicCode
         resetUiState()
