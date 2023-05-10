@@ -38,7 +38,7 @@ fun ProfileRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    WelcomeScreen(
+    ProfileScreen(
         uiState = uiState,
       navigateToWalletName= navigateToWalletName,
       navigateToChangeWallet= navigateToChangeWallet,
@@ -54,7 +54,7 @@ fun ProfileRoute(
 
 
 @Composable
-fun WelcomeScreen(
+fun ProfileScreen(
     uiState: ProfileUiState,
     navigateToWalletName : ()->Unit,
     navigateToChangeWallet : ()->Unit,
@@ -72,14 +72,14 @@ fun WelcomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        ClickableText(stringResource(id = R.string.profile_wallet_name),navigateToWalletName)
-        ClickableText(stringResource(id = R.string.profile_change_wallet),navigateToChangeWallet)
-        ClickableText(stringResource(id = R.string.profile_change_password),navigateToChangePassword)
-        ClickableText(stringResource(id = R.string.profile_change_avatar),navigateToChangeAvatar)
-        ClickableText(stringResource(id = R.string.profile_lock_by_default),navigateToLockedByDefault)
-        ClickableText(stringResource(id = R.string.profile_backup_pk),navigateToBackupPK)
-        ClickableText(stringResource(id = R.string.profile_backup_mnemonic),navigateToBackupMnemonic)
-        ClickableText(stringResource(id = R.string.profile_delete_wallet),navigateToDeleteWallet, color = MaterialTheme.colors.error)
+        ClickableText(text = stringResource(id = R.string.profile_wallet_name),onclick = navigateToWalletName)
+        ClickableText(text = stringResource(id = R.string.profile_change_wallet), onclick = navigateToChangeWallet)
+        ClickableText(text = stringResource(id = R.string.profile_change_password), onclick = navigateToChangePassword)
+        ClickableText(text = stringResource(id = R.string.profile_change_avatar), onclick = navigateToChangeAvatar)
+        ClickableText(text = stringResource(id = R.string.profile_lock_by_default), onclick = navigateToLockedByDefault)
+        ClickableText(text = stringResource(id = R.string.profile_backup_pk), onclick = navigateToBackupPK)
+        ClickableText(text = stringResource(id = R.string.profile_backup_mnemonic), onclick = navigateToBackupMnemonic)
+        ClickableText(text = stringResource(id = R.string.profile_delete_wallet), onclick = navigateToDeleteWallet, color = MaterialTheme.colors.error)
                Spacer(Modifier.weight(1f))
     }
 

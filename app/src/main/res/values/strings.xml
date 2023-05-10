@@ -74,5 +74,23 @@
     <string name="profile_backup_pk">Back up Private Key</string>
     <string name="profile_backup_mnemonic">Back uo Mnemonic</string>
     <string name="profile_delete_wallet">Delete Wallet</string>
+    <string name="history_tab_all">All</string>
+    <string name="history_tab_send">Send</string>
+    <string name="history_tab_receive">Receive</string>
+    <string name="history_tab_stake">Stake</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_volume">Volume</string>
+    <string name="sort_by_date">Date</string>
+    <string name="invite_friend_share">Invite Friend share</string>
+    <string name="best_ranking_box_title">BEST RANKINGS</string>
+    <string name="address">Address</string>
+    <string name="credit">Credit</string>
+    <string name="credits"> %d credits</string>
+    <string name="friend_invited_msg">you have invite %d friends,gaining</string>
+    <string name="my_invitation_code">MY INVITATION CODE</string>
+    <string name="refer_friend_msg">Refer a friend and get rewards</string>
+    <string name="reward_rules_box_title">REWARD RULES</string>
+    <string name="usage_credits_box_title">USAGES OF CREDITS</string>
+
 
 </resources>

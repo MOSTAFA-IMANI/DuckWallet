@@ -8,14 +8,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.akaam.app.duckwallet.ui.features.adddevice.addNewDeviceScreen
 import com.akaam.app.duckwallet.ui.features.adddevice.navigateToAddNewDeviceScreen
+import com.akaam.app.duckwallet.ui.features.adressbook.addressBookScreen
+import com.akaam.app.duckwallet.ui.features.adressbook.navigateToAddressBook
 import com.akaam.app.duckwallet.ui.features.createwallet.createWalletScreen
 import com.akaam.app.duckwallet.ui.features.createwallet.navigateToCreateWallet
+import com.akaam.app.duckwallet.ui.features.history.historyScreen
+import com.akaam.app.duckwallet.ui.features.history.navigateToHistory
 import com.akaam.app.duckwallet.ui.features.home.HomeMenuItem
 import com.akaam.app.duckwallet.ui.features.home.HomeSourceNavigationOptions
 import com.akaam.app.duckwallet.ui.features.home.homeScreen
 import com.akaam.app.duckwallet.ui.features.home.navigateToHome
 import com.akaam.app.duckwallet.ui.features.importwallet.importWalletScreen
 import com.akaam.app.duckwallet.ui.features.importwallet.navigateToImportWallet
+import com.akaam.app.duckwallet.ui.features.invite.inviteScreen
+import com.akaam.app.duckwallet.ui.features.invite.navigateToInvite
 import com.akaam.app.duckwallet.ui.features.login.loginNavigationRoute
 import com.akaam.app.duckwallet.ui.features.login.loginScreen
 import com.akaam.app.duckwallet.ui.features.login.navigateToLogin
@@ -27,8 +33,12 @@ import com.akaam.app.duckwallet.ui.features.pairledger.navigateToPairLedgerScree
 import com.akaam.app.duckwallet.ui.features.pairledger.pairLedgerScreen
 import com.akaam.app.duckwallet.ui.features.profile.navigateToProfile
 import com.akaam.app.duckwallet.ui.features.profile.profileScreen
+import com.akaam.app.duckwallet.ui.features.sort.navigateToSortBy
+import com.akaam.app.duckwallet.ui.features.sort.sortByScreen
 import com.akaam.app.duckwallet.ui.features.splash.splashNavigationRoute
 import com.akaam.app.duckwallet.ui.features.splash.splashScreen
+import com.akaam.app.duckwallet.ui.features.stacking.navigateToStaking
+import com.akaam.app.duckwallet.ui.features.stacking.stakingScreen
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.navigateToVerifyMnemonicCode
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.verifyMnemonicCodeScreen
 import com.akaam.app.duckwallet.ui.features.watchwallet.navigateToWatchWallet
@@ -118,17 +128,28 @@ fun DuckWalletNavgraph(
             onMenuItemClick = {item->
                 when(item){
                     HomeMenuItem.AboutUs ->{}
-                    HomeMenuItem.AddressBook ->{}
+                    HomeMenuItem.AddressBook ->{
+                        destinationLabel.value =navController.navigateToAddressBook()
+                    }
                     HomeMenuItem.Announcements ->{}
-                    HomeMenuItem.FriendInvitation ->{}
+                    HomeMenuItem.FriendInvitation ->{
+                        destinationLabel.value =navController.navigateToInvite()
+
+                    }
                     HomeMenuItem.HelperCenter ->{}
                     HomeMenuItem.Profile -> {
                         destinationLabel.value =navController.navigateToProfile()
                     }
                     HomeMenuItem.Settings -> {}
-                    HomeMenuItem.SortBy -> {}
-                    HomeMenuItem.Stacking -> {}
-                    HomeMenuItem.TransactionHistory -> {}
+                    HomeMenuItem.SortBy -> {
+                        destinationLabel.value =navController.navigateToSortBy()
+                    }
+                    HomeMenuItem.Stacking -> {
+                        destinationLabel.value =navController.navigateToStaking()
+                    }
+                    HomeMenuItem.TransactionHistory -> {
+                        destinationLabel.value =navController.navigateToHistory()
+                    }
                 }
             }
         )
@@ -143,6 +164,17 @@ fun DuckWalletNavgraph(
             navigateToDeleteWallet={},
             modifier = screenModifiers,
             )
+
+        stakingScreen()
+        historyScreen()
+        sortByScreen(
+            sortByNameOnClick = {},
+            sortByVolumeOnClick = {},
+            sortByDateOnClick = {},
+            modifier = screenModifiers,
+        )
+        addressBookScreen()
+        inviteScreen()
     }
 
 }

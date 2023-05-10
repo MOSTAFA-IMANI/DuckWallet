@@ -1,6 +1,5 @@
 package com.akaam.app.duckwallet.ui.features.profile
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -8,11 +7,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 
 const val profileNavigationRoute = "profile_route"
-const val welcomeNavigationRouteLabel = "PROFILE"
+const val profileNavigationRouteLabel = "PROFILE"
 
 fun NavController.navigateToProfile(navOptions: NavOptions? = null): String {
     this.navigate(profileNavigationRoute, navOptions)
-    return welcomeNavigationRouteLabel
+    return profileNavigationRouteLabel
 }
 
 fun NavGraphBuilder.profileScreen(

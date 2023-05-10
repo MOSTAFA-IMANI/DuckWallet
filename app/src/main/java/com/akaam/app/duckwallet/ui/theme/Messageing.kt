@@ -12,7 +12,15 @@ private val roundCornerRadiusValue = 20.dp
 fun ShowErrorMessage(message:String, isShortMessage:Boolean=false){
     val context = LocalContext.current
     if (isShortMessage)
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    else
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+}
+@Composable
+fun ShowToastMessage(message:String, isShortMessage:Boolean=false){
+    val context = LocalContext.current
+    if (isShortMessage)
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     else
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }

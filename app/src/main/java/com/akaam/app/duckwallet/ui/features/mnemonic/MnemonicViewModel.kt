@@ -12,6 +12,7 @@ import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.akaam.app.duckwallet.ui.util.extension.copyTextToClipboard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -52,11 +53,7 @@ class MnemonicViewModel @Inject constructor(
         }
     }
     fun copyMnemonicListCode(context:Context){
-        val clipboardManager =
-            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("Mnemonic Code:", getMnemonicPlaneText())
-        clipboardManager.setPrimaryClip(clipData)
-
+        context.copyTextToClipboard("Mnemonic Code:",getMnemonicPlaneText())
     }
     fun generateQrCode(context:Context){
         val windowManager: WindowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager

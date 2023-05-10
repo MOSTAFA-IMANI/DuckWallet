@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 
  enum class HomeSourceNavigationOptions(val source:String="") {
-     Default(),
+     Default("default"),
      FromCreatingWallet("create_wallet"),
      FromImportingWallet("import_wallet");
      companion object {

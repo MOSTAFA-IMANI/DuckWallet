@@ -22,16 +22,17 @@ import com.akaam.app.duckwallet.ui.util.extension.innerShadow
 
 
 private val roundCornerRadiusValue = 20.dp
-val WhiteColorWithAlpha  = Color(0x30FFFFFF)
+val WhiteColorWithAlpha = Color(0x30FFFFFF)
+
 @Composable
 fun MainButton(
     onClick: () -> Unit,
     text: String,
-    textSize: TextUnit =20.sp,
-    descriptionSize: TextUnit =9.sp,
+    textSize: TextUnit = 20.sp,
+    descriptionSize: TextUnit = 9.sp,
     description: String? = null,
     isSecondory: Boolean = false,
-    isTheMainBottomButton:Boolean=false,
+    isTheMainBottomButton: Boolean = false,
     modifier: Modifier = if (isTheMainBottomButton)
         Modifier
             .fillMaxWidth()
@@ -56,17 +57,16 @@ fun MainButton(
         modifier =
         modifier
             .innerShadow(
-            color = WhiteColorWithAlpha,
-            cornersRadius = roundCornerRadiusValue,
-            blur = 20.dp,
-            spread = 0.dp,
-            offsetX = 0.dp,
-            offsetY = 9.dp)
-            ,
+                color = WhiteColorWithAlpha,
+                cornersRadius = roundCornerRadiusValue,
+                blur = 20.dp,
+                spread = 0.dp,
+                offsetX = 0.dp,
+                offsetY = 9.dp),
 
         enabled = enabled,
         interactionSource = interactionSource,
-        elevation =ButtonDefaults.elevation(
+        elevation = ButtonDefaults.elevation(
             defaultElevation = 3.dp,
             pressedElevation = 5.dp,
             hoveredElevation = 4.dp,
@@ -93,6 +93,7 @@ fun MainButton(
     }
 
 }
+
 @Composable
 fun FlatButton(
     onClick: () -> Unit,
@@ -105,17 +106,17 @@ fun FlatButton(
     border: BorderStroke? = ButtonDefaults.outlinedBorder,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         contentColor = MaterialTheme.colors.onSurface,
-        backgroundColor =  MaterialTheme.colors.surface),
+        backgroundColor = MaterialTheme.colors.surface),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     fontSize: TextUnit = 14.sp,
-    textAlign :TextAlign = TextAlign.Center
+    textAlign: TextAlign = TextAlign.Center,
 ) {
     OutlinedButton(
         modifier =
         modifier.padding(1.dp),
         enabled = enabled,
         interactionSource = interactionSource,
-        elevation =elevation,
+        elevation = elevation,
         border = border,
         contentPadding = contentPadding,
         onClick = onClick,
@@ -131,6 +132,7 @@ fun FlatButton(
     }
 
 }
+
 @Composable
 fun MenuButton(
     onClick: () -> Unit,
@@ -143,17 +145,17 @@ fun MenuButton(
     border: BorderStroke? = ButtonDefaults.outlinedBorder,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         contentColor = MaterialTheme.colors.onSurface,
-        backgroundColor =  MaterialTheme.colors.surface),
+        backgroundColor = MaterialTheme.colors.surface),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     fontSize: TextUnit = 14.sp,
-    textAlign :TextAlign = TextAlign.Center
+    textAlign: TextAlign = TextAlign.Center,
 ) {
     OutlinedButton(
         modifier =
         modifier.padding(1.dp),
         enabled = enabled,
         interactionSource = interactionSource,
-        elevation =elevation,
+        elevation = elevation,
         border = border,
         contentPadding = contentPadding,
         onClick = onClick,
@@ -161,7 +163,7 @@ fun MenuButton(
         colors = colors) {
 
         Text(
-            modifier= Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             fontSize = fontSize,
             text = text,
             textAlign = textAlign)
@@ -171,11 +173,17 @@ fun MenuButton(
 }
 
 @Composable
-fun ClickableText(text:String, onclick:()->Unit,color:Color = MaterialTheme.colors.primary){
-    Text(modifier =
-    Modifier.clickable { onclick.invoke() }
+fun ClickableText(
+    modifier: Modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 8.dp, horizontal = 16.dp),
+    text: String,
+    onclick: () -> Unit,
+    color: Color = MaterialTheme.colors.primary,
+) {
+    Text(modifier =
+    modifier
+        .clickable { onclick.invoke() },
         text = text,
         color = color,
         textAlign = TextAlign.Start)
@@ -185,12 +193,12 @@ fun ClickableText(text:String, onclick:()->Unit,color:Color = MaterialTheme.colo
 @Composable
 fun PreviewMain() {
     MainButton({}, "title")
-    FlatButton({},"copy")
+    FlatButton({}, "copy")
 }
 
 
 @Preview
 @Composable
 fun PreviewSecondory() {
-    MainButton({}, text="title", description = "description",)
+    MainButton({}, text = "title", description = "description")
 }

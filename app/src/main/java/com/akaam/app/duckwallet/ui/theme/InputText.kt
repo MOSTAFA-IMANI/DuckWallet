@@ -30,6 +30,10 @@ import androidx.compose.ui.unit.sp
 import com.akaam.app.duckwallet.ui.util.extension.innerShadow
 import  androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults.BorderBox
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.draw.alpha
@@ -60,95 +64,71 @@ fun MainEditText(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = RoundedCornerShape(inputTextRoundCornerRadiusValue),
 
-) {
+    ) {
 
-Surface(shape =  RoundedCornerShape(cardRoundCornerRadiusValue),
-   ) {
-    Column( modifier = Modifier
-        .background(MaterialTheme.colors.surface)
-        .padding(2.dp),) {
-        Text(
-            modifier = Modifier.padding(8.dp,2.dp),
-            text = label,
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 14.sp)
-        Spacer(modifier = Modifier.padding(1.dp))
+    Surface(
+        shape = RoundedCornerShape(cardRoundCornerRadiusValue),
+    ) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.surface)
+                .padding(2.dp),
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp, 2.dp),
+                text = label,
+                color = MaterialTheme.colors.onSurface,
+                fontSize = 14.sp)
+            Spacer(modifier = Modifier.padding(1.dp))
 
-        BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 2.dp)
-                .clip(shape)
-                .background(MaterialTheme.colors.background)
-                .padding(10.dp,10.dp),
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 2.dp)
+                    .clip(shape)
+                    .background(MaterialTheme.colors.background)
+                    .padding(10.dp, 10.dp),
+                enabled = enabled,
+                readOnly = readOnly,
+                textStyle = textStyle,
 //            placeholder = placeholder,
 //            leadingIcon = leadingIcon,
 //            trailingIcon = trailingIcon,
 //            isError = isError,
-            visualTransformation = visualTransformation,
-            keyboardActions = keyboardActions,
-            keyboardOptions = keyboardOptions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            interactionSource = interactionSource,
+                visualTransformation = visualTransformation,
+                keyboardActions = keyboardActions,
+                keyboardOptions = keyboardOptions,
+                singleLine = singleLine,
+                maxLines = maxLines,
+                interactionSource = interactionSource,
 //            colors = colors,
-            decorationBox = @Composable { innerTextField ->
-                Row(
-                    modifier,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (leadingIcon != null) leadingIcon()
-                    Box(Modifier.weight(1f)) {
-                        if (value.isEmpty()) {
-                            Text(
-                                fontSize= 10.sp,
-                                modifier = Modifier.alpha(0.2f),
-                                text = hint,
-                            )
+                decorationBox = @Composable { innerTextField ->
+                    Row(
+                        modifier,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (leadingIcon != null) leadingIcon()
+                        Box(Modifier.weight(1f)) {
+                            if (value.isEmpty()) {
+                                Text(
+                                    fontSize = 10.sp,
+                                    modifier = Modifier.alpha(0.2f),
+                                    text = hint,
+                                )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
+                        if (trailingIcon != null) trailingIcon()
                     }
-                    if (trailingIcon != null) trailingIcon()
+
                 }
-
-            }
             )
-    /*    OutlinedTextField(
-            shape = shape,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 2.dp)
-                .clip(shape)
-                .background(MaterialTheme.colors.background)
-               ,
+            Spacer(modifier = Modifier.padding(2.dp))
+        }
 
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            placeholder = placeholder,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            isError = isError,
-            visualTransformation = visualTransformation,
-            keyboardActions = keyboardActions,
-            keyboardOptions = keyboardOptions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            interactionSource = interactionSource,
-            colors = colors,
-            value = value,
-            onValueChange = onValueChange,
-
-            )*/
-        Spacer(modifier = Modifier.padding(2.dp))
     }
-
-}
 
 
 }
@@ -158,7 +138,11 @@ Surface(shape =  RoundedCornerShape(cardRoundCornerRadiusValue),
 fun PreviewInputText() {
     DuckWalletTheme() {
 
-        MainEditText(value = "value", onValueChange = {}, label = "test")
+        MainEditText(value = "value",
+            onValueChange = {},
+            label = "test",
+            trailingIcon = { Icon(imageVector = Icons.Filled.AccountBox, contentDescription = null) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) })
     }
 }
 
