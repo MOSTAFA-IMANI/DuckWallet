@@ -32,10 +32,10 @@ class HomeViewModel @Inject constructor(
     private fun fillTokenList() {
         val tempList = ArrayList<TokenInfo>()
 
-        tempList.add(TokenInfo("1","Token name","0.00","0.00","0.00 $","https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579"))
-        tempList.add(TokenInfo("2","Token name","0.00","0.00","0.00 $","https://assets.coingecko.com/coins/images/279/thumb/ethereum.png?1595348880"))
-        tempList.add(TokenInfo("3","Token name","0.00","0.00","0.00 $","https://bitholla.s3.ap-northeast-2.amazonaws.com/exchange/hapycoin/DGOLD.png"))
-        tempList.add(TokenInfo("4","Token name","0.00","0.00","0.00 $","https://assets.coingecko.com/coins/images/5/thumb/dogecoin.png?1547792256"))
+        tempList.add(TokenInfo("1","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/btc/200"))
+        tempList.add(TokenInfo("2","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/ada/200"))
+        tempList.add(TokenInfo("3","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/eth/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
 
         _tokenList.value = tempList
 

@@ -10,6 +10,8 @@ import com.akaam.app.duckwallet.ui.features.adddevice.addNewDeviceScreen
 import com.akaam.app.duckwallet.ui.features.adddevice.navigateToAddNewDeviceScreen
 import com.akaam.app.duckwallet.ui.features.adressbook.addressBookScreen
 import com.akaam.app.duckwallet.ui.features.adressbook.navigateToAddressBook
+import com.akaam.app.duckwallet.ui.features.buy.buyScreen
+import com.akaam.app.duckwallet.ui.features.buy.navigateToBuy
 import com.akaam.app.duckwallet.ui.features.createwallet.createWalletScreen
 import com.akaam.app.duckwallet.ui.features.createwallet.navigateToCreateWallet
 import com.akaam.app.duckwallet.ui.features.history.historyScreen
@@ -39,6 +41,8 @@ import com.akaam.app.duckwallet.ui.features.splash.splashNavigationRoute
 import com.akaam.app.duckwallet.ui.features.splash.splashScreen
 import com.akaam.app.duckwallet.ui.features.stacking.navigateToStaking
 import com.akaam.app.duckwallet.ui.features.stacking.stakingScreen
+import com.akaam.app.duckwallet.ui.features.swap.selection.navigateToSwapSelection
+import com.akaam.app.duckwallet.ui.features.swap.selection.swapSelectionScreen
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.navigateToVerifyMnemonicCode
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.verifyMnemonicCodeScreen
 import com.akaam.app.duckwallet.ui.features.watchwallet.navigateToWatchWallet
@@ -121,9 +125,9 @@ fun DuckWalletNavgraph(
         homeScreen(
             navigateToSendToken = {},
             navigateToReceiveToken = {},
-            navigateToSwapToken = {},
+            navigateToSwapToken = {   destinationLabel.value =navController.navigateToSwapSelection()},
             navigateToStakeToken = {},
-            navigateToBuyToken = {},
+            navigateToBuyToken = {   destinationLabel.value =navController.navigateToBuy()},
             onFailureOccurred = {},
             onMenuItemClick = {item->
                 when(item){
@@ -175,6 +179,9 @@ fun DuckWalletNavgraph(
         )
         addressBookScreen()
         inviteScreen()
+
+        buyScreen(modifier = screenModifiers)
+        swapSelectionScreen(modifier = screenModifiers, onNextStepClick = {})
     }
 
 }

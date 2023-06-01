@@ -91,6 +91,20 @@
     <string name="refer_friend_msg">Refer a friend and get rewards</string>
     <string name="reward_rules_box_title">REWARD RULES</string>
     <string name="usage_credits_box_title">USAGES OF CREDITS</string>
+    <string name="copy_address_book">The addressBook has been copied into clipboard\n</string>
+    <string name="buy_title">Buy</string>
+    <string name="buy_system">Buy system:</string>
+    <string name="token_info_title">Token Info</string>
+    <string name="swap_rate">Rate: %s</string>
+    <string name="swap_fee">Fee: %s</string>
+    <string name="swap_price_impact">Price impact: %s</string>
+    <string name="swap_min_receive">Minimum Received: %s</string>
+    <string name="select_token">Select Token</string>
+    <string name="destination_title">To</string>
+    <string name="origin_title">From</string>
+    <string name="you_pay">You Pay: %s</string>
+    <string name="you_get">You Get: %s</string>
+    <string name="balance">Balance: %s</string>
 
 
 </resources>

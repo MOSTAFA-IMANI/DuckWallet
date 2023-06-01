@@ -2,6 +2,7 @@ package com.akaam.app.duckwallet.ui.features.home
 
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -206,9 +207,10 @@ fun HomeScreen(
         }
 
 
-        if(isEntranceDialogShowing){
+        AnimatedVisibility(visible =isEntranceDialogShowing ) {
             DialogBoxEntranceCongratulations(onDismiss ={onDialogDismiss.invoke(true)} , descriptionText = entranceMessage)
         }
+
     }
 
 
@@ -251,6 +253,8 @@ fun HomeScreen(
             isEntranceDialogShowing= false
             // show tutorial for first time
         }
+
+        else -> {}
     }
 }
 
@@ -402,9 +406,9 @@ fun MainList(tokenList: List<TokenInfo>, item: TokenInfo, index: Int) {
             )
         Text(text = item.name,
             style = MaterialTheme.typography.overline)
-        Text(text = item.price,
+        Text(text = item.price.toString(),
             style = MaterialTheme.typography.overline)
-        Text(text = "${item.amount}  =${item.amountInUSD}",
+        Text(text = "${item.amount}  =${item.amountInUSD} $",
             style = MaterialTheme.typography.overline)
     }
     if (index < tokenList.lastIndex)
@@ -623,10 +627,12 @@ fun DialogBoxEntranceCongratulations(
                 .heightIn(0.dp, 500.dp)) {
 
                 Column(modifier = Modifier
-                    .padding(top = paddingValue,
+                    .padding(
+                        top = paddingValue,
                         start = paddingValue,
                         end = paddingValue,
-                        bottom = 0.dp)
+                        bottom = 0.dp
+                    )
                     .clip(RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius))
                     .background(MaterialTheme.colors.primaryVariant),
                 horizontalAlignment = Alignment.CenterHorizontally,

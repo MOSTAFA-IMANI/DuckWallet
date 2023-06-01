@@ -55,6 +55,7 @@ fun MainEditText(
     hint: String = "",
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    descriptionIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -74,11 +75,16 @@ fun MainEditText(
                 .background(MaterialTheme.colors.surface)
                 .padding(2.dp),
         ) {
-            Text(
-                modifier = Modifier.padding(8.dp, 2.dp),
-                text = label,
-                color = MaterialTheme.colors.onSurface,
-                fontSize = 14.sp)
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical =  5.dp),
+                    text = label,
+                    color = MaterialTheme.colors.onSurface,
+                    fontSize = 14.sp)
+                if (descriptionIcon != null) descriptionIcon()
+            }
             Spacer(modifier = Modifier.padding(1.dp))
 
             BasicTextField(

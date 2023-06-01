@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -51,6 +52,8 @@ fun AddressBookScreen(
     onItemCopyClick: KFunction2<Context, AddressBook, Unit>
 ) {
     val context = LocalContext.current
+    val onCopyMessage = stringResource(id = R.string.copy_address_book)
+
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -74,11 +77,13 @@ fun AddressBookScreen(
                         .height(12.dp)
                         .clickable {
                             onItemCopyClick.invoke(context, addressBook)
-                            // TODO: How can use Sting resource and composable
+
                             Toast
-                                .makeText(context,
-                                    "The addressBook has been copied into clipboard",
-                                    Toast.LENGTH_SHORT)
+                                .makeText(
+                                    context,
+                                    onCopyMessage,
+                                    Toast.LENGTH_SHORT
+                                )
                                 .show()
                         },
                 )
