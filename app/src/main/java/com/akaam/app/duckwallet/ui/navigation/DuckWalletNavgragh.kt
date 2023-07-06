@@ -1,6 +1,7 @@
 package com.akaam.app.duckwallet.ui.navigation
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,26 +28,38 @@ import com.akaam.app.duckwallet.ui.features.invite.navigateToInvite
 import com.akaam.app.duckwallet.ui.features.login.loginNavigationRoute
 import com.akaam.app.duckwallet.ui.features.login.loginScreen
 import com.akaam.app.duckwallet.ui.features.login.navigateToLogin
-import com.akaam.app.duckwallet.ui.features.welcome.welcomeScreen
-import com.akaam.app.duckwallet.ui.features.welcome.navigateToWelcome
 import com.akaam.app.duckwallet.ui.features.mnemonic.mnemonicCodeScreen
 import com.akaam.app.duckwallet.ui.features.mnemonic.navigateToMnemonicCode
 import com.akaam.app.duckwallet.ui.features.pairledger.navigateToPairLedgerScreen
 import com.akaam.app.duckwallet.ui.features.pairledger.pairLedgerScreen
 import com.akaam.app.duckwallet.ui.features.profile.navigateToProfile
 import com.akaam.app.duckwallet.ui.features.profile.profileScreen
+import com.akaam.app.duckwallet.ui.features.receive.navigateToReceive
+import com.akaam.app.duckwallet.ui.features.receive.receiveScreen
+import com.akaam.app.duckwallet.ui.features.send.address.navigateToSendAddress
+import com.akaam.app.duckwallet.ui.features.send.address.sendAddressScreen
+import com.akaam.app.duckwallet.ui.features.send.confirm.navigateToSendConfirm
+import com.akaam.app.duckwallet.ui.features.send.confirm.sendConfirmScreen
+import com.akaam.app.duckwallet.ui.features.send.selection.navigateToSendSelection
+import com.akaam.app.duckwallet.ui.features.send.selection.sendSelectionScreen
 import com.akaam.app.duckwallet.ui.features.sort.navigateToSortBy
 import com.akaam.app.duckwallet.ui.features.sort.sortByScreen
 import com.akaam.app.duckwallet.ui.features.splash.splashNavigationRoute
 import com.akaam.app.duckwallet.ui.features.splash.splashScreen
 import com.akaam.app.duckwallet.ui.features.stacking.navigateToStaking
 import com.akaam.app.duckwallet.ui.features.stacking.stakingScreen
+import com.akaam.app.duckwallet.ui.features.stake.selection.navigateToStakeSelection
+import com.akaam.app.duckwallet.ui.features.stake.selection.stakeSelectionScreen
+import com.akaam.app.duckwallet.ui.features.swap.confirm.navigateToSwapConfirm
+import com.akaam.app.duckwallet.ui.features.swap.confirm.swapConfirmScreen
 import com.akaam.app.duckwallet.ui.features.swap.selection.navigateToSwapSelection
 import com.akaam.app.duckwallet.ui.features.swap.selection.swapSelectionScreen
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.navigateToVerifyMnemonicCode
 import com.akaam.app.duckwallet.ui.features.verifymnemonic.verifyMnemonicCodeScreen
 import com.akaam.app.duckwallet.ui.features.watchwallet.navigateToWatchWallet
 import com.akaam.app.duckwallet.ui.features.watchwallet.watchWalletScreen
+import com.akaam.app.duckwallet.ui.features.welcome.navigateToWelcome
+import com.akaam.app.duckwallet.ui.features.welcome.welcomeScreen
 
 @Composable
 fun DuckWalletNavgraph(
@@ -123,26 +136,32 @@ fun DuckWalletNavgraph(
             modifier = screenModifiers,
             navigateToHome = {destinationLabel.value =navController.navigateToHome()})
         homeScreen(
-            navigateToSendToken = {},
-            navigateToReceiveToken = {},
-            navigateToSwapToken = {   destinationLabel.value =navController.navigateToSwapSelection()},
-            navigateToStakeToken = {},
-            navigateToBuyToken = {   destinationLabel.value =navController.navigateToBuy()},
+            navigateToSendToken = {
+                destinationLabel.value = navController.navigateToSendAddress()
+            },
+            navigateToReceiveToken = { destinationLabel.value = navController.navigateToReceive() },
+            navigateToSwapToken = {
+                destinationLabel.value = navController.navigateToSwapSelection()
+            },
+            navigateToStakeToken = {destinationLabel.value = navController.navigateToStakeSelection()},
+            navigateToBuyToken = { destinationLabel.value = navController.navigateToBuy() },
             onFailureOccurred = {},
-            onMenuItemClick = {item->
-                when(item){
-                    HomeMenuItem.AboutUs ->{}
-                    HomeMenuItem.AddressBook ->{
-                        destinationLabel.value =navController.navigateToAddressBook()
+            onMenuItemClick = { item ->
+                when (item) {
+                    HomeMenuItem.AboutUs -> {}
+                    HomeMenuItem.AddressBook -> {
+                        destinationLabel.value = navController.navigateToAddressBook()
                     }
-                    HomeMenuItem.Announcements ->{}
-                    HomeMenuItem.FriendInvitation ->{
-                        destinationLabel.value =navController.navigateToInvite()
+
+                    HomeMenuItem.Announcements -> {}
+                    HomeMenuItem.FriendInvitation -> {
+                        destinationLabel.value = navController.navigateToInvite()
 
                     }
-                    HomeMenuItem.HelperCenter ->{}
+
+                    HomeMenuItem.HelperCenter -> {}
                     HomeMenuItem.Profile -> {
-                        destinationLabel.value =navController.navigateToProfile()
+                        destinationLabel.value = navController.navigateToProfile()
                     }
                     HomeMenuItem.Settings -> {}
                     HomeMenuItem.SortBy -> {
@@ -181,7 +200,30 @@ fun DuckWalletNavgraph(
         inviteScreen()
 
         buyScreen(modifier = screenModifiers)
-        swapSelectionScreen(modifier = screenModifiers, onNextStepClick = {})
+        swapSelectionScreen(
+            modifier = screenModifiers,
+            onNextStepClick = { destinationLabel.value = navController.navigateToSwapConfirm() })
+        swapConfirmScreen(modifier = screenModifiers, onNextStepClick = {})
+        receiveScreen(modifier = screenModifiers, onNextStepClick = {})
+        sendAddressScreen(
+            modifier = screenModifiers,
+            onNextStepClick = { destinationLabel.value = navController.navigateToSendSelection() },
+            onAddressBookClick = { destinationLabel.value = navController.navigateToAddressBook() },
+            onMyAccountsClick = {},
+            onRecentClick = {},
+        )
+        sendSelectionScreen(
+            modifier = screenModifiers,
+            onNextStepClick = {destinationLabel.value = navController.navigateToSendConfirm()},
+        )
+        sendConfirmScreen(
+            modifier = screenModifiers,
+            onNextStepClick = {},
+        )
+        stakeSelectionScreen (
+            modifier = screenModifiers,
+            onNextStepClick = {},
+        )
     }
 
 }

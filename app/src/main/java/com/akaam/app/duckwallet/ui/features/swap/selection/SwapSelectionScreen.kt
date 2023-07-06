@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,6 +19,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,8 +42,10 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.swap.SwapViewModel
+import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.TokenSelectingBox
+import kotlin.reflect.KFunction1
 
 
 @Composable
@@ -49,7 +54,8 @@ fun SwapSelectionRoute(
     viewModel: SwapViewModel = hiltViewModel(),
     onNextStepClick: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.selectionUiState.collectAsStateWithLifecycle()
+    val tokenList by viewModel.tokenList.collectAsStateWithLifecycle()
 
 
     SwapSelectionScreen(
@@ -57,7 +63,10 @@ fun SwapSelectionRoute(
         modifier = modifier,
         originTokenInfo = viewModel.getOriginInfo(),
         destinationTokenInfo = viewModel.getDestinationInfo(),
-        onNextStepClick = onNextStepClick
+        onNextStepClick = onNextStepClick,
+        tokenList = tokenList,
+        setOriginInfo = viewModel::setOriginInfo,
+        setDistinctionInfo = viewModel ::setDestinationInfo
     )
 }
 
@@ -69,9 +78,34 @@ fun SwapSelectionScreen(
     originTokenInfo: TokenInfo?,
     destinationTokenInfo: TokenInfo?,
     onNextStepClick: () -> Unit,
+    tokenList: List<TokenInfo>,
+    setDistinctionInfo: KFunction1<TokenInfo, Unit>,
+    setOriginInfo: KFunction1<TokenInfo, Unit>,
 ) {
 
-
+    var confirmDialogShowingState by remember {
+        mutableStateOf(false)
+    }
+    var isOriginSelected by remember {
+        mutableStateOf(false)
+    }
+    if (confirmDialogShowingState) {
+        val context = LocalContext.current
+        FullScreenTokenListDialog(
+            tokenList = tokenList,
+            setShowDialog = {
+                confirmDialogShowingState = it
+            },
+            onConfirm = {
+                if(isOriginSelected){
+                    setOriginInfo.invoke(it)
+                }
+                else{
+                    setDistinctionInfo.invoke(it)
+                }
+            },
+           )
+    }
         ConstraintLayout(
             modifier = modifier
                 .fillMaxWidth()
@@ -88,7 +122,10 @@ fun SwapSelectionScreen(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
-                onClickAction = {},
+                onClickAction = {
+                    confirmDialogShowingState = true
+                    isOriginSelected = true
+                                },
                 value = originTokenInfo?.name ?: "",
                 label = stringResource(id = R.string.origin_title).uppercase(),
                 leadingIcon = {
@@ -113,13 +150,13 @@ fun SwapSelectionScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = stringResource(id = R.string.you_get).uppercase(),
+                            text = stringResource(id = R.string.you_get,"").uppercase(),
                             color = MaterialTheme.colors.primary,
                             style =MaterialTheme.typography.caption
                         )
                         Text(
                             modifier = Modifier.alpha(0.3f),
-                            text = stringResource(id = R.string.balance).uppercase(),
+                            text = stringResource(id = R.string.balance,"").uppercase(),
                             color = Color.Black,
                             style = MaterialTheme.typography.overline
                         )
@@ -127,20 +164,7 @@ fun SwapSelectionScreen(
                 }
             )
 
-           Image(
-                 modifier = Modifier
-                     .width(24.dp)
-                     .height(24.dp)
-                     .offset(x = (-1).dp, y = (1).dp)
-                     .constrainAs(transferIcon) {
-                         top.linkTo(destinationBox.bottom)
-                         start.linkTo(parent.start)
-                         width = Dimension.wrapContent
-                         height = Dimension.wrapContent
-                     },
-                 painter = painterResource(id = R.drawable.ic_swap),
-                 contentDescription = null
-             )
+
 
             TokenSelectingBox(
                 modifier = Modifier
@@ -151,7 +175,8 @@ fun SwapSelectionScreen(
                         end.linkTo(parent.end)
 
                     },
-                onClickAction = {},
+                onClickAction = { confirmDialogShowingState = true
+                    isOriginSelected = false},
                 value = destinationTokenInfo?.name ?: "",
                 label = stringResource(id = R.string.destination_title).uppercase(),
                 leadingIcon = {
@@ -177,13 +202,14 @@ fun SwapSelectionScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = stringResource(id = R.string.you_pay).uppercase(),
+                            text = stringResource(id = R.string.you_pay,"").uppercase(),
+
                             color = MaterialTheme.colors.primary,
                             style =MaterialTheme.typography.caption
                         )
                         Text(
                             modifier = Modifier.alpha(0.3f),
-                            text = stringResource(id = R.string.balance).uppercase(),
+                            text = stringResource(id = R.string.balance,"").uppercase(),
                             color = Color.Black,
                             style = MaterialTheme.typography.overline
                         )
@@ -290,7 +316,20 @@ fun SwapSelectionScreen(
                         isSecondory = true
                     )
 
-
+            Image(
+                modifier = Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+                    .offset(x = (-1).dp, y = (1).dp)
+                    .constrainAs(transferIcon) {
+                        top.linkTo(originBox.bottom)
+                        start.linkTo(parent.start)
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                    },
+                painter = painterResource(id = R.drawable.ic_swap),
+                contentDescription = null
+            )
 
         }
 

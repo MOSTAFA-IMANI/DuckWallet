@@ -19,6 +19,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,6 +30,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.ThirdPartyProvider
 import com.akaam.app.duckwallet.domain.models.TokenInfo
+import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainEditText
 import com.akaam.app.duckwallet.ui.theme.TokenSelectingBox
 import kotlin.reflect.KFunction1
@@ -48,6 +53,7 @@ fun BuyRoute(
     viewModel: BuyViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val tokenList by viewModel.tokenList.collectAsStateWithLifecycle()
 
 
     BuyScreen(
@@ -57,7 +63,9 @@ fun BuyRoute(
         amount = viewModel.buyingTokenAmount,
         onAmountUpdate = viewModel::updateAmount,
         amountInDollar = viewModel.buyingTokenAmountUSD,
-        thirdPartyProvider = viewModel.thirdPartyBuyingProvider
+        thirdPartyProvider = viewModel.thirdPartyBuyingProvider,
+        tokenList = tokenList,
+        setOriginInfo = viewModel::setBuyingTokenInfo,
     )
 }
 
@@ -71,7 +79,25 @@ fun BuyScreen(
     onAmountUpdate: KFunction1<String, Unit>,
     amountInDollar: String,
     thirdPartyProvider: List<ThirdPartyProvider>,
+    tokenList: List<TokenInfo>,
+    setOriginInfo: KFunction1<TokenInfo, Unit>,
 ) {
+    var confirmDialogShowingState by remember {
+    mutableStateOf(false)
+}
+
+    if (confirmDialogShowingState) {
+        val context = LocalContext.current
+        FullScreenTokenListDialog(
+            tokenList = tokenList,
+            setShowDialog = {
+                confirmDialogShowingState = it
+            },
+            onConfirm = {
+                setOriginInfo.invoke(it)
+            },
+        )
+    }
     LazyColumn(
         modifier = modifier.padding(vertical = 15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -79,7 +105,7 @@ fun BuyScreen(
         item {
 
             TokenSelectingBox(
-                onClickAction = {},
+                onClickAction = {confirmDialogShowingState = true},
                 value = buyingTokenInfo?.name ?: "",
                 hint = stringResource(id =R.string.select_token),
                 label = stringResource(id = R.string.buy_title).uppercase(),

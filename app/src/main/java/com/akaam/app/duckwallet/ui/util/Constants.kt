@@ -10,4 +10,6 @@ object Constants {
           }
           return tempList
      }
+     const val CACHE_DIRECTORY = "our_docs/"
+
 }

@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 
 
 object DuckWalletIcons {
-    val Visibility = Icon.ImageVectorIcon(Icons.Filled.MoreVert)
-    val VisibilityOff = Icon.ImageVectorIcon(Icons.Filled.MailOutline)
+    val Visibility = Icon.ImageVectorIcon(Icons.Filled.Lock)
+    val VisibilityOff = Icon.ImageVectorIcon(Icons.Filled.Person)
 
 //    val Feeds = Icon.ImageVectorIcon(Icons.Filled.Feed)
 //    val FeedsBorder = Icon.ImageVectorIcon(Icons.Outlined.Feed)

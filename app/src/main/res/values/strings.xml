@@ -105,6 +105,27 @@
     <string name="you_pay">You Pay: %s</string>
     <string name="you_get">You Get: %s</string>
     <string name="balance">Balance: %s</string>
+    <string name="swap_confirm_description">Output is estimated.you will receive at least 0.00 (token name) or the transaction will revert. please make sure you have energy and bandwidth, or the transaction may fail.</string>
+    <string name="resource_consumed">RESOURCES CONSUMED</string>
+    <string name="bandwith">%s Bandwith</string>
+    <string name="receive_title">Scan the QR Code and Pay</string>
+    <string name="save_qr">Save QR Code</string>
+    <string name="share_qr">Share QR Code</string>
+    <string name="my_account">My Account</string>
+    <string name="recent">Recent</string>
+    <string name="error_open_browser">can not open browser</string>
+    <string name="transfer_note_title">Add note to this transfer</string>
+    <string name="transfer_note_description">note ...</string>
+    <string name="availible_amount_to_send">Available : %s</string>
+    <string name="send_from">From</string>
+    <string name="send_to">To</string>
+    <string name="energy">Energy</string>
+    <string name="estimated">Estimated</string>
+    <string name="stake_get">Get</string>
+    <string name="stake_to">To</string>
+    <string name="confirm_button_title">Confirm</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="cancel_buuton_title">Cancel</string>
 
 
 </resources>

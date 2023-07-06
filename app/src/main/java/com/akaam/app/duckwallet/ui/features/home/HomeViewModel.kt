@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
 
 
-    private fun fillTokenList() {
+    fun fillTokenList() {
         val tempList = ArrayList<TokenInfo>()
 
         tempList.add(TokenInfo("1","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/btc/200"))

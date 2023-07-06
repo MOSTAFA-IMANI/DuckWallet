@@ -21,7 +21,7 @@ internal class SplashViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             delay(500)
-            _uiState.value = SplashUiState.NavigateToHome
+            _uiState.value = SplashUiState.NavigateToWelcome
 
         }
     }

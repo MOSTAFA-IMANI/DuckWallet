@@ -1,47 +1,53 @@
-package com.akaam.app.duckwallet.ui.features.swap
+package com.akaam.app.duckwallet.ui.features.stake
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.akaam.app.duckwallet.domain.models.TokenInfo
-import com.akaam.app.duckwallet.ui.features.swap.confirm.SwapConfirmUiState
-import com.akaam.app.duckwallet.ui.features.swap.selection.SwapSelectionUiState
+import com.akaam.app.duckwallet.ui.features.send.address.SendAddressUiState
+import com.akaam.app.duckwallet.ui.features.send.confirm.SendConfirmUiState
+import com.akaam.app.duckwallet.ui.features.send.selection.SendSelectionUiState
+import com.akaam.app.duckwallet.ui.features.stake.selection.StakeSelectionUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SwapViewModel @Inject constructor(
+class StakeViewModel @Inject constructor(
     /*  private val loginUseCase: LoginUseCase,*/
 ) : ViewModel() {
 
 
-    private val _uiStateSelection =
-        MutableStateFlow<SwapSelectionUiState>(SwapSelectionUiState.Nothing)
-    val selectionUiState = _uiStateSelection.asStateFlow()
+
+    private val _uiStateSelection = MutableStateFlow<StakeSelectionUiState>(StakeSelectionUiState.Nothing)
+    val uiStateSelection = _uiStateSelection.asStateFlow()
+
+    private val _uiStateConfirm = MutableStateFlow<SendConfirmUiState>(SendConfirmUiState.Nothing)
+    val uiStateConfirm = _uiStateConfirm.asStateFlow()
 
 
-    private val _uiStateConfirm = MutableStateFlow<SwapConfirmUiState>(SwapConfirmUiState.Nothing)
-    val confirmUiState = _uiStateConfirm.asStateFlow()
-
-    private var originTokenInfo: TokenInfo? by mutableStateOf(null)
-    private var distinctionTokenInfo: TokenInfo? by mutableStateOf(null)
-
-    var buyingTokenAmount by mutableStateOf(0.0)
+    var receivingAccountAddress by mutableStateOf("")
         private set
 
-    var buyingTokenAmountUSD by mutableStateOf("= 0.0 $")
+    private var selectedTokenInfo: TokenInfo? by mutableStateOf(null)
+
+    var sendingTokenAmount by mutableStateOf(0.0)
         private set
-    private val _tokenList: MutableStateFlow<List<TokenInfo>> = MutableStateFlow(listOf())
+
+    var transferNote by mutableStateOf("")
+        private set
+
+    var sendingTokenAmountUSD by mutableStateOf("= 0.0 $")
+        private set
+
+   private val _tokenList: MutableStateFlow<List<TokenInfo>> = MutableStateFlow(listOf())
     val tokenList = _tokenList.asStateFlow()
 
     init {
-
         fillTokenList()
     }
-
     fun fillTokenList() {
         val tempList = ArrayList<TokenInfo>()
 
@@ -89,29 +95,26 @@ class SwapViewModel @Inject constructor(
         _tokenList.value = tempList
 
     }
-
-    fun updateAmount(input: String) {
-        buyingTokenAmount = input.toDoubleOrNull() ?: 0.0
-        originTokenInfo?.let {
-            buyingTokenAmountUSD = " = ${(buyingTokenAmount * it.currencyFeeInUSD)} $"
+    fun updateAmount(input:String) {
+        sendingTokenAmount = input.toDoubleOrNull()?:0.0
+        selectedTokenInfo?.let {
+            sendingTokenAmountUSD = " = ${(sendingTokenAmount * it.currencyFeeInUSD)} $"
         }
     }
+    fun getSendingTokenInfo(): TokenInfo? {
+        return  selectedTokenInfo
+    }
+    fun setSendingTokenInfo(tokenInfo: TokenInfo) {
+        selectedTokenInfo = tokenInfo
+    }
+    fun updateReceivingAccountAddress(input:String) {
+        receivingAccountAddress = input
 
-    fun getOriginInfo(): TokenInfo? {
-        return originTokenInfo
     }
 
-    fun getDestinationInfo(): TokenInfo? {
-        return distinctionTokenInfo
-    }
 
-    fun setOriginInfo(tokenInfo: TokenInfo) {
-        originTokenInfo = tokenInfo
-    }
-
-    fun setDestinationInfo(tokenInfo: TokenInfo) {
-        distinctionTokenInfo = tokenInfo
-    }
 }
+
+
 
 

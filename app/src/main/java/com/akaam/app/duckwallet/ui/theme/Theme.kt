@@ -5,7 +5,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
@@ -15,9 +14,10 @@ private val DarkColorPalette = darkColors(
     surface = gray500,
     onSurface = brown500,
     background = Color.White,
-    onBackground= Color.Black,
+    onBackground = Color.Black,
     error = red500,
-    secondaryVariant = green200
+    secondaryVariant = green200,
+    onPrimary = Color.White,
 
     )
 
@@ -28,9 +28,10 @@ private val LightColorPalette = lightColors(
     surface = gray500,
     onSurface = brown500,
     background = Color.White,
-    onBackground= Color.Black,
+    onBackground = Color.Black,
     error = red500,
-    secondaryVariant = green200
+    secondaryVariant = green200,
+    onPrimary = Color.White,
 
 
     /* Other default colors to override

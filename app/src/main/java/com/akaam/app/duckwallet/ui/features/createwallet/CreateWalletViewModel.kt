@@ -23,12 +23,12 @@ class CreateWalletViewModel @Inject constructor(
 
     val uiState: SharedFlow<CreateWalletUiState> = _uiState
 */
-    var walletName by mutableStateOf("test")
+    var walletName by mutableStateOf("")
         private set
-    var password by mutableStateOf("Mm123456@")
+    var password by mutableStateOf("")
         private set
 
-    var passwordConfirm by mutableStateOf("Mm123456@")
+    var passwordConfirm by mutableStateOf("")
         private set
 
     var isWeakPassword = mutableStateOf(true)
