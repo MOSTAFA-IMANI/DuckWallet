@@ -42,6 +42,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.swap.SwapViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.TokenSelectingBox
@@ -106,6 +107,8 @@ fun SwapSelectionScreen(
             },
            )
     }
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_swap).uppercase()) {
+
         ConstraintLayout(
             modifier = modifier
                 .fillMaxWidth()
@@ -125,7 +128,7 @@ fun SwapSelectionScreen(
                 onClickAction = {
                     confirmDialogShowingState = true
                     isOriginSelected = true
-                                },
+                },
                 value = originTokenInfo?.name ?: "",
                 label = stringResource(id = R.string.origin_title).uppercase(),
                 leadingIcon = {
@@ -147,8 +150,8 @@ fun SwapSelectionScreen(
                 },
                 descriptionIcon = {
                     Column(modifier.padding(vertical = 5.dp, horizontal = 45.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = stringResource(id = R.string.you_get,"").uppercase(),
                             color = MaterialTheme.colors.primary,
@@ -218,103 +221,103 @@ fun SwapSelectionScreen(
             )
 
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 5.dp)
-                            .constrainAs(tokenInfoTitle) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 5.dp)
+                    .constrainAs(tokenInfoTitle) {
 
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(tokenInfoBox.top)
-                            },
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(tokenInfoBox.top)
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(id = R.string.token_info_title).uppercase(),
+                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.caption
+                )
+                Text(
+                    text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo),
+                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.caption
+                )
+
+            }
+
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 5.dp)
+                    .constrainAs(tokenInfoBox) {
+                        top.linkTo(destinationBox.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(swapButton.top)
+
+                    },
+
+                ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 5.dp, horizontal = 35.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colors.secondaryVariant)
+                        .padding(5.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    val textModifier =Modifier.padding(vertical = 5.dp, horizontal = 5.dp)
+
+                    Row(
+                        modifier = textModifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = stringResource(id = R.string.token_info_title).uppercase(),
-                            color = MaterialTheme.colors.primary,
+                            text = stringResource(id = R.string.swap_rate, ""),
                             style = MaterialTheme.typography.caption
                         )
                         Text(
-                            text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo),
-                            color = MaterialTheme.colors.primary,
+                            text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo, true),
                             style = MaterialTheme.typography.caption
                         )
-
                     }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                            .constrainAs(tokenInfoBox) {
-                                top.linkTo(destinationBox.bottom)
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(swapButton.top)
-
-                            },
-
-                        ) {
-
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 5.dp, horizontal = 35.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(MaterialTheme.colors.secondaryVariant)
-                                .padding(5.dp),
-                            verticalArrangement = Arrangement.spacedBy(5.dp),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            val textModifier =Modifier.padding(vertical = 5.dp, horizontal = 5.dp)
-
-                            Row(
-                                modifier = textModifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.swap_rate, ""),
-                                    style = MaterialTheme.typography.caption
-                                )
-                                Text(
-                                    text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo, true),
-                                    style = MaterialTheme.typography.caption
-                                )
-                            }
-                            Text(
-                                modifier = textModifier,
-                                text = stringResource(id = R.string.swap_fee, ""),
-                                style = MaterialTheme.typography.caption
-                            )
-                            Text(
-                                modifier = textModifier,
-                                text = stringResource(id = R.string.swap_price_impact, ""),
-                                style = MaterialTheme.typography.caption
-                            )
-                            Text(
-                                modifier = textModifier,
-                                text = stringResource(id = R.string.swap_min_receive, ""),
-                                style = MaterialTheme.typography.caption
-                            )
-                        }
-                    }
-                    MainButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 40.dp, start = 30.dp, end = 30.dp)
-                            .constrainAs(swapButton) {
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
-                                height = Dimension.wrapContent
-                            },
-                        onClick = { onNextStepClick.invoke() },
-                        text = stringResource(id = R.string.swap_button_title),
-                        isTheMainBottomButton = true,
-                        isSecondory = true
+                    Text(
+                        modifier = textModifier,
+                        text = stringResource(id = R.string.swap_fee, ""),
+                        style = MaterialTheme.typography.caption
                     )
+                    Text(
+                        modifier = textModifier,
+                        text = stringResource(id = R.string.swap_price_impact, ""),
+                        style = MaterialTheme.typography.caption
+                    )
+                    Text(
+                        modifier = textModifier,
+                        text = stringResource(id = R.string.swap_min_receive, ""),
+                        style = MaterialTheme.typography.caption
+                    )
+                }
+            }
+            MainButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 40.dp, start = 30.dp, end = 30.dp)
+                    .constrainAs(swapButton) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                        height = Dimension.wrapContent
+                    },
+                onClick = { onNextStepClick.invoke() },
+                text = stringResource(id = R.string.swap_button_title),
+                isTheMainBottomButton = true,
+                isSecondory = true
+            )
 
             Image(
                 modifier = Modifier
@@ -332,6 +335,7 @@ fun SwapSelectionScreen(
             )
 
         }
+    }
 
 
 

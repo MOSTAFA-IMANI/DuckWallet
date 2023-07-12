@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.send.SendViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.MainEditText
 
@@ -66,54 +67,8 @@ fun SendAddressScreen(
 ) {
 
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-    ) {
-
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .weight(1f)) {
-            MainEditText(
-                label = stringResource(id = R.string.address).uppercase(),
-                value = receivingAccountAddress,
-                onValueChange = onUpdateReceivingAccountAddress,
-            trailingIcon ={
-                Icon(imageVector = Icons.Filled.Close, contentDescription = "close")
-            } )
-            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-                val buttonModifier = Modifier.wrapContentWidth()
-                val buttonTextSize = MaterialTheme.typography.overline
-                MainButton(
-                    modifier = buttonModifier,
-                    onClick = { onAddressBookClick.invoke() },
-                    textSize = buttonTextSize.fontSize,
-                text = stringResource(id = R.string.title_address_book_route).uppercase(),
-                    isTheMainBottomButton = false,
-                    isSecondory = false
-                )
-                MainButton(
-                    modifier = buttonModifier,
-                    onClick = { onMyAccountsClick.invoke() },
-                    text = stringResource(id = R.string.my_account).uppercase(),
-                    textSize = buttonTextSize.fontSize,
-                    isTheMainBottomButton = false,
-                    isSecondory = false
-                )
-                MainButton(
-                    modifier = buttonModifier,
-                    onClick = { onRecentClick.invoke() },
-                    textSize = buttonTextSize.fontSize,
-                    text = stringResource(id = R.string.recent).uppercase(),
-                    isTheMainBottomButton = false,
-                    isSecondory = false
-                )
-            }
-        }
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_send).uppercase(),
+    actionContent = {
         MainButton(
             modifier = Modifier
                 .fillMaxWidth()
@@ -124,15 +79,77 @@ fun SendAddressScreen(
             isSecondory = true
         )
 
+    }) {
+
+        MainContent(
+            receivingAccountAddress,
+            onUpdateReceivingAccountAddress,
+            onAddressBookClick,
+            onMyAccountsClick,
+            onRecentClick
+        )
     }
-
-
-
-
 
     when (uiState) {
         SendAddressUiState.Nothing -> {}
 
+    }
+}
+
+@Composable
+private fun MainContent(
+    receivingAccountAddress: String,
+    onUpdateReceivingAccountAddress: (String) -> Unit,
+    onAddressBookClick: () -> Unit,
+    onMyAccountsClick: () -> Unit,
+    onRecentClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        MainEditText(
+            label = stringResource(id = R.string.address).uppercase(),
+            value = receivingAccountAddress,
+            onValueChange = onUpdateReceivingAccountAddress,
+            trailingIcon = {
+                Icon(imageVector = Icons.Filled.Close, contentDescription = "close")
+            })
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val buttonModifier = Modifier.wrapContentWidth()
+            val buttonTextSize = MaterialTheme.typography.overline
+            MainButton(
+                modifier = buttonModifier,
+                onClick = { onAddressBookClick.invoke() },
+                textSize = buttonTextSize.fontSize,
+                text = stringResource(id = R.string.title_address_book_route).uppercase(),
+                isTheMainBottomButton = false,
+                isSecondory = false
+            )
+            MainButton(
+                modifier = buttonModifier,
+                onClick = { onMyAccountsClick.invoke() },
+                text = stringResource(id = R.string.my_account).uppercase(),
+                textSize = buttonTextSize.fontSize,
+                isTheMainBottomButton = false,
+                isSecondory = false
+            )
+            MainButton(
+                modifier = buttonModifier,
+                onClick = { onRecentClick.invoke() },
+                textSize = buttonTextSize.fontSize,
+                text = stringResource(id = R.string.recent).uppercase(),
+                isTheMainBottomButton = false,
+                isSecondory = false
+            )
+        }
     }
 }
 

@@ -41,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.ThirdPartyProvider
 import com.akaam.app.duckwallet.domain.models.TokenInfo
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainEditText
 import com.akaam.app.duckwallet.ui.theme.TokenSelectingBox
@@ -98,110 +99,116 @@ fun BuyScreen(
             },
         )
     }
-    LazyColumn(
-        modifier = modifier.padding(vertical = 15.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        item {
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_buy).uppercase()) {
 
-            TokenSelectingBox(
-                onClickAction = {confirmDialogShowingState = true},
-                value = buyingTokenInfo?.name ?: "",
-                hint = stringResource(id =R.string.select_token),
-                label = stringResource(id = R.string.buy_title).uppercase(),
-                leadingIcon = {
-                    Icon(
-                        painter = rememberAsyncImagePainter(buyingTokenInfo?.logoUrl),
-                        contentDescription = null
+        LazyColumn(
+            modifier = modifier.padding(vertical = 15.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            item {
+
+                TokenSelectingBox(
+                    onClickAction = {confirmDialogShowingState = true},
+                    value = buyingTokenInfo?.name ?: "",
+                    hint = stringResource(id =R.string.select_token),
+                    label = stringResource(id = R.string.buy_title).uppercase(),
+                    leadingIcon = {
+                        Icon(
+                            painter = rememberAsyncImagePainter(buyingTokenInfo?.logoUrl),
+                            contentDescription = null
+                        )
+                    },
+                    trailingIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .width(20.dp)
+                                .rotate(180f),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
+                        )
+                    },
+                )
+            }
+            item {
+                MainEditText(
+                    label = stringResource(id = R.string.token_amount).uppercase(),
+                    value = amount.toString(),
+                    onValueChange = onAmountUpdate,
+                    descriptionIcon = {
+                        Text(modifier = Modifier
+                            .padding(vertical = 5.dp, horizontal = 20.dp)
+                            .alpha(0.5f),text = amountInDollar, )
+                    })
+            }
+            item {
+
+                Text(
+                    modifier= Modifier.padding(horizontal = 15.dp),
+                    text = stringResource(id = R.string.buy_system), color = MaterialTheme.colors.primary, style = MaterialTheme.typography.caption)
+            }
+            items(thirdPartyProvider) { thirdPartyProvider ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(2.dp)
+                        .border(
+                            width = 2.dp,
+                            shape = RectangleShape,
+                            color = MaterialTheme.colors.secondary
+                        )
+                        .padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp),
+                        painter = rememberAsyncImagePainter(thirdPartyProvider.logoUrl),
+                        contentDescription = thirdPartyProvider.name
                     )
-                },
-                trailingIcon = {
+                    Column(
+                        Modifier
+                            .weight(1f)
+                            .padding(vertical = 10.dp)) {
+                        Text(
+                            modifier = Modifier.padding(2.dp),
+                            text = thirdPartyProvider.name,
+                            style = MaterialTheme.typography.caption,
+                            color = Color.Black
+                        )
+                        Text(
+                            modifier = Modifier.padding(2.dp),
+                            text = thirdPartyProvider.description,
+                            style = MaterialTheme.typography.caption,
+                            color = MaterialTheme.colors.onSurface
+                        )
+                    }
+                    Text(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(15))
+                            .background(MaterialTheme.colors.primaryVariant)
+                            .padding(2.dp),
+                        text = "Best rate",
+                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colors.onSurface
+                    )
                     Image(
                         painter = painterResource(id = R.drawable.ic_back),
                         contentDescription = null,
                         modifier = Modifier
-                            .width(20.dp)
-                            .width(20.dp)
+                            .width(15.dp)
+                            .width(15.dp)
                             .rotate(180f),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
                     )
-                },
-            )
-        }
-        item {
-            MainEditText(
-                label = stringResource(id = R.string.token_amount).uppercase(),
-                value = amount.toString(),
-                onValueChange = onAmountUpdate,
-                descriptionIcon = {
-                    Text(modifier = Modifier
-                        .padding(vertical = 5.dp, horizontal = 20.dp)
-                        .alpha(0.5f),text = amountInDollar, )
-                })
-        }
-        item {
 
-            Text(
-                modifier= Modifier.padding(horizontal = 15.dp),
-                text = stringResource(id = R.string.buy_system), color = MaterialTheme.colors.primary, style = MaterialTheme.typography.caption)
-        }
-        items(thirdPartyProvider) { thirdPartyProvider ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(2.dp)
-                    .border(
-                        width = 2.dp,
-                        shape = RectangleShape,
-                        color = MaterialTheme.colors.secondary
-                    )
-                    .padding(5.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Image(
-                    modifier = Modifier
-                        .width(32.dp)
-                        .height(32.dp),
-                    painter = rememberAsyncImagePainter(thirdPartyProvider.logoUrl),
-                    contentDescription = thirdPartyProvider.name
-                )
-                Column(Modifier.weight(1f).padding(vertical = 10.dp)) {
-                    Text(
-                        modifier = Modifier.padding(2.dp),
-                        text = thirdPartyProvider.name,
-                        style = MaterialTheme.typography.caption,
-                        color = Color.Black
-                    )
-                    Text(
-                        modifier = Modifier.padding(2.dp),
-                        text = thirdPartyProvider.description,
-                        style = MaterialTheme.typography.caption,
-                        color = MaterialTheme.colors.onSurface
-                    )
                 }
-                Text(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(15))
-                        .background(MaterialTheme.colors.primaryVariant)
-                        .padding(2.dp),
-                    text = "Best rate",
-                    style = MaterialTheme.typography.caption,
-                    color = MaterialTheme.colors.onSurface
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(15.dp)
-                        .width(15.dp)
-                        .rotate(180f),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
-                )
-
             }
-        }
 
+        }
     }
 
 

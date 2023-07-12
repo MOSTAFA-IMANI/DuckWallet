@@ -1,5 +1,6 @@
 package com.akaam.app.duckwallet.ui.theme
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,9 +51,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
+import com.akaam.app.duckwallet.domain.models.AddressBook
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.theme.icon.DuckWalletIcons
 import com.akaam.app.duckwallet.ui.theme.icon.Icon
+import com.commandiron.wheel_picker_compose.WheelTimePicker
+import com.commandiron.wheel_picker_compose.core.SelectorProperties
+import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
+import java.time.LocalTime
+import java.util.Date
 
 
 private val roundCornerRadiusValue = 20.dp
@@ -156,6 +163,192 @@ fun PasswordConfirmDialog(
 
             }
         }
+    }
+
+}
+
+
+@Composable
+fun ChooseWalletDialog(
+    walletList: List<AddressBook>,
+    setShowDialog: (Boolean) -> Unit,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit,
+
+    ) {
+
+    var selectingIndex by remember {
+        mutableStateOf(0)
+    }
+    Dialog(
+        onDismissRequest = { setShowDialog(false) },
+    ) {
+
+        Box(
+            modifier = Modifier
+                .background(gray700)
+                .clip(RoundedCornerShape(20.dp))
+                .padding(10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            LazyColumn(modifier = Modifier.padding(20.dp)) {
+
+                item {
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.choose_your_wallet).uppercase(),
+                        style = MaterialTheme.typography.h4,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.onPrimary
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+                itemsIndexed(walletList) { index, item ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { selectingIndex = index }
+                            .padding(4.dp)) {
+                        Text(
+                            text = (item.walletName),
+                            style = MaterialTheme.typography.body1,
+                            color = if (index == selectingIndex)MaterialTheme.colors.primaryVariant
+                            else MaterialTheme.colors.background
+                        )
+                        Text(
+                            text = (item.walletAddress),
+                            style = MaterialTheme.typography.caption,
+                            color = if (index == selectingIndex)MaterialTheme.colors.primaryVariant
+                            else MaterialTheme.colors.background
+                        )
+                    }
+
+                }
+                item {
+                    Spacer(modifier = Modifier.height(90.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+
+                        MainButton(
+                            modifier = Modifier.wrapContentWidth(),
+                            onClick = {
+                                setShowDialog(false)
+                                onDismiss.invoke()
+                            },
+                            text = stringResource(id = R.string.cancel_buuton_title).uppercase(),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color.White,
+                                backgroundColor = MaterialTheme.colors.onSurface,
+
+                                )
+                        )
+                        MainButton(
+                            modifier = Modifier.wrapContentWidth(),
+                            onClick = {
+                                onConfirm(walletList[selectingIndex].walletName)
+                                setShowDialog(false)
+                            },
+                            text = stringResource(id = R.string.confirm_button_title).uppercase(),
+                            isSecondory = true,
+                            isTheMainBottomButton = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun ChooseTimeDialog(
+    setShowDialog: (Boolean) -> Unit,
+    onConfirm: (LocalTime?) -> Unit,
+    onDismiss: () -> Unit,
+
+    ) {
+
+    var selectingTime:LocalTime? by remember {
+        mutableStateOf(null)
+    }
+    Dialog(
+        onDismissRequest = { setShowDialog(false) },
+    ) {
+
+        Box(
+            modifier = Modifier
+                .background(gray700)
+                .clip(RoundedCornerShape(20.dp))
+                .padding(10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.set_time).uppercase(),
+                    style = MaterialTheme.typography.h4,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.onPrimary
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
+                WheelTimePicker(
+                    modifier = Modifier.fillMaxWidth(),
+                    startTime = LocalTime.MIN,
+                    textColor = MaterialTheme.colors.background,
+                    selectorProperties = WheelPickerDefaults.selectorProperties(
+                        enabled = true,
+                        shape = RoundedCornerShape(25.dp),
+                        color = Color(0xFFf1faee).copy(alpha = 0.2f),
+                        border = BorderStroke(2.dp, Color(0xFFf1faee))
+                    )
+                ) { snappedTime ->
+                  selectingTime = snappedTime
+                   }
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+
+                    MainButton(
+                        modifier = Modifier.wrapContentWidth(),
+                        onClick = {
+                            setShowDialog(false)
+                            onDismiss.invoke()
+                        },
+                        text = stringResource(id = R.string.cancel_buuton_title).uppercase(),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White,
+                            backgroundColor = MaterialTheme.colors.onSurface,
+
+                            )
+                    )
+                    MainButton(
+                        modifier = Modifier.wrapContentWidth(),
+                        onClick = {
+                            onConfirm(selectingTime)
+                            setShowDialog(false)
+                        },
+                        text = stringResource(id = R.string.confirm_button_title).uppercase(),
+                        isSecondory = true,
+                        isTheMainBottomButton = false
+                    )
+                }
+            }
+        }
+
     }
 
 }
@@ -274,7 +467,6 @@ private fun TokenList(
 @Preview
 @Composable
 fun PreviewDialog() {
-    MainButton({}, "title")
-    FlatButton({}, "copy")
+    ChooseTimeDialog( {}, {}, {})
 }
 

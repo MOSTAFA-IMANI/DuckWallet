@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
+import com.akaam.app.duckwallet.ui.theme.ProfileScaffold
 
 val boxCornerRadius = 22.dp
 
@@ -54,27 +56,30 @@ fun InviteScreen(
     invitationCode: String,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement =  Arrangement.spacedBy(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
-    ) {
+    ProfileScaffold(appBarTitle = stringResource(id = R.string.screen_title_invite).uppercase()) {
 
-        item {
-            Text(text = stringResource(id = R.string.invite_friend_share),
-                color = MaterialTheme.colors.primary,
-                style = MaterialTheme.typography.h4)
-            ShareInviteBox(creditCount, invitedCount, invitationCode)
-        }
-        item {
-            BestRankingBox()
-        }
-        item {
-            RewardRulesBox()
-        }
-        item {
-            UsageOfCreditsBox()
+        LazyColumn(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement =  Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
+        ) {
+
+            item {
+                Text(text = stringResource(id = R.string.invite_friend_share),
+                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.h4)
+                ShareInviteBox(creditCount, invitedCount, invitationCode)
+            }
+            item {
+                BestRankingBox()
+            }
+            item {
+                RewardRulesBox()
+            }
+            item {
+                UsageOfCreditsBox()
+            }
         }
     }
 
@@ -176,6 +181,7 @@ fun ShareInviteBox(creditCount: Int, invitedCount: Int, invitationCode: String) 
                     columnHeightPx = coordinates.size.height.toFloat()
                     columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
                 },
+            contentScale = ContentScale.FillWidth,
             painter = painterResource(id = R.drawable.ic_box_friend_invite),
             contentDescription = null)
         Column(

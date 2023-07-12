@@ -7,14 +7,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.akaam.app.duckwallet.ui.features.adddevice.addNewDeviceScreen
-import com.akaam.app.duckwallet.ui.features.adddevice.navigateToAddNewDeviceScreen
+import com.akaam.app.duckwallet.ui.features.addwallet.addWalletScreen
+import com.akaam.app.duckwallet.ui.features.addwallet.navigateToAddWallet
+import com.akaam.app.duckwallet.ui.features.pairledger.adddevice.addNewDeviceScreen
+import com.akaam.app.duckwallet.ui.features.pairledger.adddevice.navigateToAddNewDeviceScreen
 import com.akaam.app.duckwallet.ui.features.adressbook.addressBookScreen
 import com.akaam.app.duckwallet.ui.features.adressbook.navigateToAddressBook
 import com.akaam.app.duckwallet.ui.features.buy.buyScreen
 import com.akaam.app.duckwallet.ui.features.buy.navigateToBuy
-import com.akaam.app.duckwallet.ui.features.createwallet.createWalletScreen
-import com.akaam.app.duckwallet.ui.features.createwallet.navigateToCreateWallet
+import com.akaam.app.duckwallet.ui.features.createwallet.root.createWalletScreen
+import com.akaam.app.duckwallet.ui.features.createwallet.root.navigateToCreateWallet
 import com.akaam.app.duckwallet.ui.features.history.historyScreen
 import com.akaam.app.duckwallet.ui.features.history.navigateToHistory
 import com.akaam.app.duckwallet.ui.features.home.HomeMenuItem
@@ -28,10 +30,10 @@ import com.akaam.app.duckwallet.ui.features.invite.navigateToInvite
 import com.akaam.app.duckwallet.ui.features.login.loginNavigationRoute
 import com.akaam.app.duckwallet.ui.features.login.loginScreen
 import com.akaam.app.duckwallet.ui.features.login.navigateToLogin
-import com.akaam.app.duckwallet.ui.features.mnemonic.mnemonicCodeScreen
-import com.akaam.app.duckwallet.ui.features.mnemonic.navigateToMnemonicCode
-import com.akaam.app.duckwallet.ui.features.pairledger.navigateToPairLedgerScreen
-import com.akaam.app.duckwallet.ui.features.pairledger.pairLedgerScreen
+import com.akaam.app.duckwallet.ui.features.createwallet.mnemonic.mnemonicCodeScreen
+import com.akaam.app.duckwallet.ui.features.createwallet.mnemonic.navigateToMnemonicCode
+import com.akaam.app.duckwallet.ui.features.pairledger.root.navigateToPairLedgerScreen
+import com.akaam.app.duckwallet.ui.features.pairledger.root.pairLedgerScreen
 import com.akaam.app.duckwallet.ui.features.profile.navigateToProfile
 import com.akaam.app.duckwallet.ui.features.profile.profileScreen
 import com.akaam.app.duckwallet.ui.features.receive.navigateToReceive
@@ -54,8 +56,16 @@ import com.akaam.app.duckwallet.ui.features.swap.confirm.navigateToSwapConfirm
 import com.akaam.app.duckwallet.ui.features.swap.confirm.swapConfirmScreen
 import com.akaam.app.duckwallet.ui.features.swap.selection.navigateToSwapSelection
 import com.akaam.app.duckwallet.ui.features.swap.selection.swapSelectionScreen
-import com.akaam.app.duckwallet.ui.features.verifymnemonic.navigateToVerifyMnemonicCode
-import com.akaam.app.duckwallet.ui.features.verifymnemonic.verifyMnemonicCodeScreen
+import com.akaam.app.duckwallet.ui.features.createwallet.verifymnemonic.navigateToVerifyMnemonicCode
+import com.akaam.app.duckwallet.ui.features.createwallet.verifymnemonic.verifyMnemonicCodeScreen
+import com.akaam.app.duckwallet.ui.features.notification.navigateToNotification
+import com.akaam.app.duckwallet.ui.features.notification.notificationScreen
+import com.akaam.app.duckwallet.ui.features.password.changePasswordScreen
+import com.akaam.app.duckwallet.ui.features.password.navigateToChangePassword
+import com.akaam.app.duckwallet.ui.features.search.navigateToSearch
+import com.akaam.app.duckwallet.ui.features.search.searchScreen
+import com.akaam.app.duckwallet.ui.features.walletname.navigateToWalletName
+import com.akaam.app.duckwallet.ui.features.walletname.walletNameScreen
 import com.akaam.app.duckwallet.ui.features.watchwallet.navigateToWatchWallet
 import com.akaam.app.duckwallet.ui.features.watchwallet.watchWalletScreen
 import com.akaam.app.duckwallet.ui.features.welcome.navigateToWelcome
@@ -139,6 +149,9 @@ fun DuckWalletNavgraph(
             navigateToSendToken = {
                 destinationLabel.value = navController.navigateToSendAddress()
             },
+            navigateToAddWallet = {navController.navigateToAddWallet()},
+            navigateToSearch = {navController.navigateToSearch()},
+            navigateToNotification ={navController.navigateToNotification()},
             navigateToReceiveToken = { destinationLabel.value = navController.navigateToReceive() },
             navigateToSwapToken = {
                 destinationLabel.value = navController.navigateToSwapSelection()
@@ -146,6 +159,8 @@ fun DuckWalletNavgraph(
             navigateToStakeToken = {destinationLabel.value = navController.navigateToStakeSelection()},
             navigateToBuyToken = { destinationLabel.value = navController.navigateToBuy() },
             onFailureOccurred = {},
+            navigateToLock = {},
+            navigateToChangeAvatar = {},
             onMenuItemClick = { item ->
                 when (item) {
                     HomeMenuItem.AboutUs -> {}
@@ -177,9 +192,9 @@ fun DuckWalletNavgraph(
             }
         )
         profileScreen(
-            navigateToWalletName={},
+            navigateToWalletName={navController.navigateToWalletName()},
             navigateToChangeWallet={},
-            navigateToChangePassword={},
+            navigateToChangePassword={navController.navigateToChangePassword()},
             navigateToChangeAvatar={},
             navigateToLockedByDefault={},
             navigateToBackupPK={},
@@ -224,6 +239,21 @@ fun DuckWalletNavgraph(
             modifier = screenModifiers,
             onNextStepClick = {},
         )
+        notificationScreen()
+        searchScreen()
+        addWalletScreen(
+
+            navigateToCreateWallet = {
+                navController.navigateToCreateWallet(destinationLabel=destinationLabel)
+            },
+            navigateToImportWallet = { navController.navigateToImportWallet(destinationLabel=destinationLabel) },
+            navigateToPairLedger = {destinationLabel.value =navController.navigateToPairLedgerScreen()},
+            navigateToWatchWallet = { navController.navigateToWatchWallet(destinationLabel=destinationLabel) },
+            onFailureOccurred = onFailureOccurred,
+            modifier = screenModifiers
+        )
+        walletNameScreen()
+        changePasswordScreen()
     }
 
 }

@@ -3,18 +3,11 @@ package com.akaam.app.duckwallet
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
 import com.akaam.app.duckwallet.ui.navigation.DuckWalletNavgraph
 import com.akaam.app.duckwallet.ui.theme.DuckWalletTheme
@@ -56,7 +49,7 @@ class MainActivity : ComponentActivity() {
                             Snackbar(snackbarData = snackbarData, backgroundColor = backgroundColor)
                         }
                     },
-                    topBar = {TopBar(destination)}
+                    topBar = {/*TopBar(destination.value)*/}
                 ) {padding->
 
                     DuckWalletNavgraph(
@@ -75,38 +68,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-    @Composable
-    fun TopBar(destination: MutableState<String>) = Surface() {
 
-//      CompositionLocalProvider(LocalDestination provides destination) {
-
-        val topBarHeight = dimensionResource(id = R.dimen.top_bar_height)
-
-          TopAppBar(
-              modifier = Modifier
-                  .height(topBarHeight)
-                  .fillMaxWidth(),
-              title = {
-                  Text(text = destination.value/*navController.currentDestination?.route?:""*/)
-              },
-              navigationIcon = {
-                  IconButton(onClick = { onBackPressed() }) {
-                      Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back")
-                  }
-              },
-
-              )
-          Image( modifier = Modifier
-              .height(topBarHeight)
-              .fillMaxWidth(),
-              contentScale = ContentScale.FillWidth,
-              painter = painterResource(id = R.drawable.background_top_bar),
-              contentDescription = "")
-
-
-
-    } 
-    
 
 
 }

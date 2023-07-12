@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.AddressBook
 import com.akaam.app.duckwallet.ui.theme.MainEditText
+import com.akaam.app.duckwallet.ui.theme.ProfileScaffold
 import kotlin.reflect.KFunction2
 
 
@@ -54,41 +55,44 @@ fun AddressBookScreen(
     val context = LocalContext.current
     val onCopyMessage = stringResource(id = R.string.copy_address_book)
 
-    LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-    ) {
-        items(addressBookList){addressBook->
+    ProfileScaffold(appBarTitle = stringResource(id = R.string.screen_title_address_book).uppercase()) {
 
-            MainEditText(
-                value = addressBook.walletAddress,
-                onValueChange = {  },
-                label = addressBook.walletName,
-                enabled = false,
-                readOnly = false,
-                trailingIcon = {
-                    Image(
-                    painter = painterResource(id = R.drawable.ic_copy),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(12.dp)
-                        .height(12.dp)
-                        .clickable {
-                            onItemCopyClick.invoke(context, addressBook)
+        LazyColumn(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            items(addressBookList){addressBook->
 
-                            Toast
-                                .makeText(
-                                    context,
-                                    onCopyMessage,
-                                    Toast.LENGTH_SHORT
-                                )
-                                .show()
-                        },
+                MainEditText(
+                    value = addressBook.walletAddress,
+                    onValueChange = {  },
+                    label = addressBook.walletName,
+                    enabled = false,
+                    readOnly = false,
+                    trailingIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_copy),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(12.dp)
+                                .height(12.dp)
+                                .clickable {
+                                    onItemCopyClick.invoke(context, addressBook)
+
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            onCopyMessage,
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                },
+                        )
+                    }
                 )
-                }
-            )
+            }
         }
     }
 

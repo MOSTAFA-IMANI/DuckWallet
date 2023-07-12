@@ -2,7 +2,9 @@ package com.akaam.app.duckwallet.ui.features.home
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 
 const val homeNavigationRoute = "home_route/{source}"
@@ -20,22 +22,32 @@ fun NavGraphBuilder.homeScreen(
     navigateToSwapToken: () -> Unit,
     navigateToStakeToken: () -> Unit,
     navigateToBuyToken: () -> Unit,
+    navigateToNotification: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToLock: () -> Unit,
+    navigateToChangeAvatar: () -> Unit,
+    navigateToAddWallet: () -> Unit,
     onFailureOccurred: @Composable (Throwable) -> Unit,
-    onMenuItemClick: (HomeMenuItem)->Unit
+    onMenuItemClick: (HomeMenuItem) -> Unit,
 ) {
     composable(homeNavigationRoute ) { navBackStackEntry ->
         val source = navBackStackEntry.arguments?.getString("source")
         val homeSourceNavigationOptions = HomeSourceNavigationOptions.from(source?:"")
         HomeRoute(
-           navigateToSendToken = navigateToSendToken,
-           navigateToReceiveToken = navigateToReceiveToken,
-           navigateToSwapToken = navigateToSwapToken,
-           navigateToStakeToken = navigateToStakeToken,
-            navigateToBuyToken=navigateToBuyToken,
+            navigateToSendToken = navigateToSendToken,
+            navigateToReceiveToken = navigateToReceiveToken,
+            navigateToSwapToken = navigateToSwapToken,
+            navigateToStakeToken = navigateToStakeToken,
+            navigateToBuyToken = navigateToBuyToken,
             onFailureOccurred = onFailureOccurred,
             onMenuItemClick = onMenuItemClick,
-            homeSourceNavigationOptions=homeSourceNavigationOptions
+            homeSourceNavigationOptions = homeSourceNavigationOptions,
+            navigateToNotification = navigateToNotification,
+            navigateToSearch = navigateToSearch,
+            navigateToLock = navigateToLock,
+            navigateToChangeAvatar = navigateToChangeAvatar,
+            navigateToAddWallet = navigateToAddWallet,
 
-        )
+            )
     }
 }

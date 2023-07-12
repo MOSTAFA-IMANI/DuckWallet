@@ -8,13 +8,13 @@
     <string name="confirm_password">INSERT PASSWORD AGAIN</string>
     <string name="dont_have_account">Don\'t have any account?</string>
     <string name="register">Register</string>
-    <string name="create_wallet_button_title">CREATE WALLET</string>
+    <string name="create_wallet_button_title">Create Wallet</string>
     <string name="create_wallet_button_description">Generate a related wallet based on your HD wallet</string>
-    <string name="import_wallet_button_title">IMPORT WALLET</string>
+    <string name="import_wallet_button_title">Import Wallet</string>
     <string name="import_wallet_button_description">Import your mnemonic privet key or keystore with on tap</string>
-    <string name="pair_ledger_button_title">PAIR LEDGER</string>
+    <string name="pair_ledger_button_title">Pair Ledger</string>
     <string name="pair_ledger_button_description">pair ledger to use your Hardware wallet</string>
-    <string name="watch_wallet_button_title">WATCH WALLET</string>
+    <string name="watch_wallet_button_title">Watch Wallet</string>
     <string name="watch_wallet_button_description">view wallet balance and transaction info anytime</string>
     <string name="password_rule" >The password must include 8 characters,at least a capital letter,a small letter,numbers and marks.</string>
     <string name="password_rule_notice" >Please enter your password based on the rules</string>
@@ -126,6 +126,39 @@
     <string name="confirm_button_title">Confirm</string>
     <string name="enter_password">Enter Password</string>
     <string name="cancel_buuton_title">Cancel</string>
+    <string name="screen_title_welcome">Welcome</string>
+    <string name="screen_title_creat_wallet">Create Wallet</string>
+    <string name="screen_title_mnemonic_code">Your Mnemonic Code</string>
+    <string name="screen_title_verify_mnemonic_code">Verify Secret Phrase</string>
+    <string name="screen_title_import_wallet">Import Wallet</string>
+    <string name="screen_title_home">Home</string>
+    <string name="screen_title_buy">Buy</string>
+    <string name="screen_title_swap">Swap</string>
+    <string name="screen_title_receive">Receive</string>
+    <string name="screen_title_send">Send</string>
+    <string name="screen_title_stake">Stake</string>
+    <string name="screen_title_staking">Staking</string>
+    <string name="screen_title_sort">Sort By</string>
+    <string name="screen_title_profile">Profile</string>
+    <string name="screen_title_invite">Friend Invitations</string>
+    <string name="screen_title_history">History Transaction</string>
+    <string name="screen_title_address_book">Address Book</string>
+    <string name="no_message">Not Message Yet!</string>
+    <string name="search_box_hint">Name/ID/contract address/Token name</string>
+    <string name="change_wallet_button_title">Change Wallet</string>
+    <string name="screen_title_add_wallet">Add Wallet</string>
+    <string name="screen_title_search">Search</string>
+    <string name="screen_title_notification">Notification</string>
+    <string name="choose_your_wallet">Choose Your Wallet</string>
+    <string name="screen_title_pair_ledger">Pair Ledger</string>
+    <string name="screen_title_watch_wallet">Watch Wallet</string>
+    <string name="rename">Rename</string>
+    <string name="screen_title_wallet_name">Wallet Name</string>
+    <string name="set_time">Set Time</string>
+    <string name="screen_title_chane_password">Change Password</string>
+    <string name="transaction_password">Transaction password</string>
+    <string name="lock_screen_password">Lock screen password</string>
+    <string name="old_password">Old Password</string>
 
 
 </resources>

@@ -3,13 +3,9 @@ package com.akaam.app.duckwallet.ui.features.send.selection
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.send.SendViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.MainEditText
@@ -87,6 +84,52 @@ fun SendSelectionScreen(
     tokenList: List<TokenInfo>,
     setSendingInfo: KFunction1<TokenInfo, Unit>,
 ) {
+
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_send).uppercase(),
+        actionContent = {
+            MainButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
+                onClick = { onNextStepClick.invoke() },
+                text = stringResource(id = R.string.next_step),
+                isTheMainBottomButton = true,
+                isSecondory = true
+            )
+        }) {
+
+        MainSendContent(
+            sendingTokenInfo,
+            amount,
+            onAmountUpdate,
+            amountInDollar,
+            transferNote,
+            onTransferNoteUpdated,
+            tokenList,
+            setSendingInfo
+        )
+
+
+    }
+
+    when (uiState) {
+        SendSelectionUiState.Nothing -> {}
+
+    }
+}
+
+@Composable
+private fun MainSendContent(
+    sendingTokenInfo: TokenInfo?,
+    amount: Double,
+    onAmountUpdate: KFunction1<String, Unit>,
+    amountInDollar: String,
+    transferNote: String,
+    onTransferNoteUpdated: KFunction1<String, Unit>,
+    tokenList: List<TokenInfo>,
+    setSendingInfo: (TokenInfo) -> Unit,
+) {
+
     var confirmDialogShowingState by remember {
         mutableStateOf(false)
     }
@@ -104,17 +147,10 @@ fun SendSelectionScreen(
             },
         )
     }
+    Column {
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-
-        Spacer(modifier = Modifier.height(20.dp))
         TokenSelectingBox(
-            onClickAction = {confirmDialogShowingState =true},
+            onClickAction = { confirmDialogShowingState = true },
             value = sendingTokenInfo?.name ?: "",
             hint = stringResource(id = R.string.select_token),
             label = stringResource(id = R.string.buy_title).uppercase(),
@@ -136,8 +172,6 @@ fun SendSelectionScreen(
                 )
             },
         )
-
-
         MainEditText(
             label = stringResource(id = R.string.token_amount).uppercase(),
             value = amount.toString(),
@@ -161,9 +195,6 @@ fun SendSelectionScreen(
                     text = amountInDollar,
                 )
             })
-
-
-
         Text(
             modifier = Modifier.padding(horizontal = 15.dp),
             text = stringResource(id = R.string.transfer_note_title),
@@ -198,26 +229,6 @@ fun SendSelectionScreen(
                 }
             }
         )
-
-        MainButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
-            onClick = { onNextStepClick.invoke() },
-            text = stringResource(id = R.string.next_step),
-            isTheMainBottomButton = true,
-            isSecondory = true
-        )
-
-    }
-
-
-
-
-
-    when (uiState) {
-        SendSelectionUiState.Nothing -> {}
-
     }
 }
 

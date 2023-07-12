@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.send.SendViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.PasswordConfirmDialog
 
@@ -84,91 +85,10 @@ fun SendConfirmScreen(
             onDismiss = {})
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 2.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "walletName",
-                    style = MaterialTheme.typography.caption,
-                    color = MaterialTheme.colors.onSurface
-                )
-                Text(
-                    text = "MainNet",
-                    style = MaterialTheme.typography.caption,
-                    color = MaterialTheme.colors.onSurface
-                )
-            }
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                text = stringResource(id = R.string.send_button_title),
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onSurface
-            )
-            Image(
-                modifier = Modifier
-                    .width(160.dp),
-                painter = painterResource(id = R.drawable.ic_send_confirm),
-                contentDescription = null
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                val boxModifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.surface)
-                    .wrapContentWidth()
-                    .weight(0.5f)
-                    .padding(5.dp)
-                FromBox(boxModifier)
-                ArrowIcon()
-                ToBox(boxModifier)
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_send).uppercase(),
+    actionContent = {
 
-                Text(
-                    text = stringResource(id = R.string.resource_consumed),
-                    style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.secondary
-                )
-                Text(
-                    text = "=",
-                    style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.secondary
-                )
-                Text(
-                        text = stringResource(id = R.string.bandwith),
-                style = MaterialTheme.typography.overline,
-                color = MaterialTheme.colors.secondary
-                )
-            }
-        }
 
         MainButton(
             modifier = Modifier
@@ -181,11 +101,95 @@ fun SendConfirmScreen(
             isSecondory = true
         )
 
+    }) {
+        MainContentToSend()
 
     }
 
     when (uiState) {
         SendConfirmUiState.Nothing -> {}
+    }
+}
+
+@Composable
+private fun MainContentToSend() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "walletName",
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.onSurface
+            )
+            Text(
+                text = "MainNet",
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.send_button_title),
+            style = MaterialTheme.typography.h3,
+            color = MaterialTheme.colors.onSurface
+        )
+        Image(
+            modifier = Modifier
+                .width(160.dp),
+            painter = painterResource(id = R.drawable.ic_send_confirm),
+            contentDescription = null
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            val boxModifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colors.surface)
+                .wrapContentWidth()
+                .weight(0.5f)
+                .padding(5.dp)
+            FromBox(boxModifier)
+            ArrowIcon()
+            ToBox(boxModifier)
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Text(
+                text = stringResource(id = R.string.resource_consumed),
+                style = MaterialTheme.typography.overline,
+                color = MaterialTheme.colors.secondary
+            )
+            Text(
+                text = "=",
+                style = MaterialTheme.typography.overline,
+                color = MaterialTheme.colors.secondary
+            )
+            Text(
+                text = stringResource(id = R.string.bandwith),
+                style = MaterialTheme.typography.overline,
+                color = MaterialTheme.colors.secondary
+            )
+        }
     }
 }
 

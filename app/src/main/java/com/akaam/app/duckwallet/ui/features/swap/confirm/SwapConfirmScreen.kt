@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.swap.SwapViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.PasswordConfirmDialog
 
@@ -84,119 +85,126 @@ fun SwapSelectionScreen(
             },
             onDismiss = {})
     }
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        TransactionIcon()
-
-        Box(
-            modifier = Modifier
-                .padding(horizontal = 5.dp),
-        ) {
-
-            Column(
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_swap).uppercase(),
+        actionContent = {
+            MainButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 5.dp, horizontal = 35.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colors.secondaryVariant)
-                    .padding(5.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                val textModifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp)
-
-                Row(
-                    modifier = textModifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.swap_rate, ""),
-                        style = MaterialTheme.typography.caption
-                    )
-                    Text(
-                        text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo, true),
-                        style = MaterialTheme.typography.caption
-                    )
-                }
-                Text(
-                    modifier = textModifier,
-                    text = stringResource(id = R.string.swap_fee, ""),
-                    style = MaterialTheme.typography.caption
-                )
-                Text(
-                    modifier = textModifier,
-                    text = stringResource(id = R.string.swap_price_impact, ""),
-                    style = MaterialTheme.typography.caption
-                )
-                Text(
-                    modifier = textModifier,
-                    text = stringResource(id = R.string.swap_min_receive, ""),
-                    style = MaterialTheme.typography.caption
-                )
-            }
-        }
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = stringResource(id = R.string.swap_confirm_description),
-            style = MaterialTheme.typography.caption
-        )
-
-        Divider(
-            modifier = Modifier
-                .alpha(0.5f)
-                .padding(horizontal = 5.dp),
-            color = MaterialTheme.colors.onSurface,
-            thickness = 1.dp
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(id = R.string.resource_consumed),
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.primary
+                    .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
+                onClick = {
+                    onNextStepClick.invoke()
+                    confirmDialogShowingState = true
+                },
+                text = stringResource(id = R.string.swap_button_title),
+                isTheMainBottomButton = true,
+                isSecondory = true
             )
-            Text(
-                text = stringResource(id = R.string.bandwith, "0.00").uppercase(),
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.primary
-            )
+        }) {
+        Column(verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
+            TransactionIcon()
+            SwapTransferInfoBox(originTokenInfo, destinationTokenInfo)
+            DescriptionWarning()
         }
-        MainButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
-            onClick = { onNextStepClick.invoke()
-                confirmDialogShowingState = true},
-            text = stringResource(id = R.string.swap_button_title),
-            isTheMainBottomButton = true,
-            isSecondory = true
-        )
-
-
     }
-
-
-
 
 
     when (uiState) {
         SwapConfirmUiState.Nothing -> {
 
+        }
+    }
+}
+
+@Composable
+fun DescriptionWarning() {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        text = stringResource(id = R.string.swap_confirm_description),
+        style = MaterialTheme.typography.caption
+    )
+
+    Divider(
+        modifier = Modifier
+            .alpha(0.5f)
+            .padding(horizontal = 5.dp),
+        color = MaterialTheme.colors.onSurface,
+        thickness = 1.dp
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = R.string.resource_consumed),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.primary
+        )
+        Text(
+            text = stringResource(id = R.string.bandwith, "0.00").uppercase(),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.primary
+        )
+
+    }
+
+}
+
+@Composable
+fun SwapTransferInfoBox(originTokenInfo: TokenInfo?, destinationTokenInfo: TokenInfo?) {
+
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 5.dp),
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp, horizontal = 35.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(MaterialTheme.colors.secondaryVariant)
+                .padding(5.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            val textModifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp)
+
+            Row(
+                modifier = textModifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(id = R.string.swap_rate, ""),
+                    style = MaterialTheme.typography.caption
+                )
+                Text(
+                    text = getTokenNameForSwap(originTokenInfo, destinationTokenInfo, true),
+                    style = MaterialTheme.typography.caption
+                )
+            }
+            Text(
+                modifier = textModifier,
+                text = stringResource(id = R.string.swap_fee, ""),
+                style = MaterialTheme.typography.caption
+            )
+            Text(
+                modifier = textModifier,
+                text = stringResource(id = R.string.swap_price_impact, ""),
+                style = MaterialTheme.typography.caption
+            )
+            Text(
+                modifier = textModifier,
+                text = stringResource(id = R.string.swap_min_receive, ""),
+                style = MaterialTheme.typography.caption
+            )
         }
     }
 }

@@ -1,12 +1,7 @@
 package com.akaam.app.duckwallet.ui.features.importwallet
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
-import com.akaam.app.duckwallet.ui.features.createwallet.CreateWalletInputs
 import com.akaam.app.duckwallet.ui.theme.*
-import com.akaam.app.duckwallet.ui.theme.Typography
 
 private const val TAG = "CreateWalletScreen"
 
@@ -78,12 +71,17 @@ internal fun CreateWalletScreen(
     mnemonicCodeList: List<String>,
 
     ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
+    WelcomeScaffold(
+        appBarTitle = stringResource(id = R.string.screen_title_import_wallet).uppercase(),
+        isScrollable = false,
+        actionContent = {
+            MainButton(onClick = { onNextStepClicked.invoke() },
+                text = stringResource(id = R.string.import_button),
+                isTheMainBottomButton = true,
+                isSecondory =true )
+        }
+    ){
         ImportWalletInputs(
             uiState = uiState,
             walletName = walletName,
@@ -92,17 +90,7 @@ internal fun CreateWalletScreen(
             mnemonicCodeList =mnemonicCodeList
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-
-       MainButton(onClick = { onNextStepClicked.invoke() },
-           text = stringResource(id = R.string.import_button),
-           isTheMainBottomButton = true,
-           isSecondory =true )
-        BottomSpacer()
     }
-
-
 }
 
 @Composable

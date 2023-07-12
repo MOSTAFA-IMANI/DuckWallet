@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -31,7 +30,7 @@ fun WatchWalletRoute(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context =LocalContext.current
 
-    CreateWalletScreen(
+    WatchWalletScreen(
         uiState = state,
         walletName = viewModel.walletName,
         walletAddress = viewModel.walletAddress,
@@ -67,7 +66,7 @@ fun ShowToastMessageAndResetUiState(messageResourceId: Int, viewModel: WatchWall
 }
 
 @Composable
-internal fun CreateWalletScreen(
+internal fun WatchWalletScreen(
 
     modifier: Modifier = Modifier,
     uiState: WatchWalletUiState,
@@ -83,31 +82,33 @@ internal fun CreateWalletScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        WelcomeScaffold(
+            appBarTitle = stringResource(id = R.string.screen_title_watch_wallet).uppercase(),
+            isScrollable = true,
+            actionContent = {
+                MainButton(onClick = { onNextStepClicked() },
+                    text = stringResource(id = R.string.done_button_title),
+                    isTheMainBottomButton = true,
+                    isSecondory =true )
+            }
+        ){
+            CreateWalletInputs(
+                uiState = uiState,
+                walletName = walletName,
+                password = walletAddress,
+                onUsernameChanged = onWalletNameChanged,
+                onPasswordChanged = onWalletAddressChanged,
 
-        CreateWalletInputs(
-            uiState = uiState,
-            walletName = walletName,
-            password = walletAddress,
-            onUsernameChanged = onWalletNameChanged,
-            onPasswordChanged = onWalletAddressChanged,
+                )
 
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-
-       MainButton(onClick = { onNextStepClicked() },
-           text = stringResource(id = R.string.done_button_title),
-           isTheMainBottomButton = true,
-           isSecondory =true )
-        BottomSpacer()
+        }
     }
 
 
 }
 
 @Composable
-fun ColumnScope.CreateWalletInputs(
+fun CreateWalletInputs(
     uiState: WatchWalletUiState,
     walletName: String,
     password: String,
@@ -115,9 +116,9 @@ fun ColumnScope.CreateWalletInputs(
     onPasswordChanged: (password: String) -> Unit,
 
     ) {
+
     Column(
         modifier = Modifier
-            .weight(1f)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

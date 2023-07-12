@@ -36,6 +36,18 @@ class HomeViewModel @Inject constructor(
         tempList.add(TokenInfo("2","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/ada/200"))
         tempList.add(TokenInfo("3","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/eth/200"))
         tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
+        tempList.add(TokenInfo("4","Token name",0.00,0.00,0.00 ,"https://cryptoicons.org/api/icon/dgd/200"))
 
         _tokenList.value = tempList
 

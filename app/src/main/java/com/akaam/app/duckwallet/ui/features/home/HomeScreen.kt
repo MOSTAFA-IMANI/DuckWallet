@@ -3,7 +3,6 @@ package com.akaam.app.duckwallet.ui.features.home
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +23,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,13 +32,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
+import com.akaam.app.duckwallet.ui.theme.DuckTopAppBar
 import com.akaam.app.duckwallet.ui.theme.FlatButton
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.MenuButton
@@ -60,7 +57,12 @@ fun HomeRoute(
     navigateToStakeToken: () -> Unit,
     navigateToBuyToken: () -> Unit,
     onMenuItemClick: (HomeMenuItem) -> Unit,
-    homeSourceNavigationOptions: HomeSourceNavigationOptions?
+    homeSourceNavigationOptions: HomeSourceNavigationOptions?,
+    navigateToNotification: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToLock: () -> Unit,
+    navigateToChangeAvatar: () -> Unit,
+    navigateToAddWallet: () -> Unit,
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -76,8 +78,13 @@ fun HomeRoute(
         onFailureOccurred = onFailureOccurred,
         onMenuClick = viewModel::onTopMenuClick,
         tokenList = tokenList,
-        onMenuItemClick=onMenuItemClick,
+        onMenuItemClick = onMenuItemClick,
         onDialogDismiss = viewModel::resetUiState,
+        navigateToNotification = navigateToNotification,
+        navigateToSearch = navigateToSearch,
+        navigateToLock = navigateToLock,
+        navigateToChangeAvatar = navigateToChangeAvatar,
+        navigateToAddWallet = navigateToAddWallet,
     )
 
     if(uiState==HomeUiState.Nothing&&viewModel.isInitCompose){
@@ -97,6 +104,7 @@ fun HomeRoute(
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
@@ -109,146 +117,123 @@ fun HomeScreen(
     tokenList: List<TokenInfo>,
     onMenuClick: () -> Unit,
     onMenuItemClick: (HomeMenuItem) -> Unit,
-    onDialogDismiss: (Boolean) -> Unit, ) {
-    var isMenuShowing by remember {
-        mutableStateOf(false)
-    }
+    onDialogDismiss: (Boolean) -> Unit,
+    navigateToNotification: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToLock: () -> Unit,
+    navigateToChangeAvatar: () -> Unit,
+    navigateToAddWallet: () -> Unit,
+) {
+    /*    var isMenuShowing by remember {
+            mutableStateOf(false)
+        }*/
     var isEntranceDialogShowing by remember {
         mutableStateOf(false)
     }
     var entranceMessage = ""
-    ConstraintLayout(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()) {
-        val (background, mainContent, topMenu, bottomButtonList, menuBox) = createRefs()
-        val mainModifier = Modifier.padding(horizontal = 9.dp)
 
-
-        Image(
-            painterResource(id = R.drawable.background_main_home),
-            contentDescription = "",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .alpha(0.9f)
-                .constrainAs(background) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom)
-
-                }
-        )
-
-        MainContent(
-            mainModifier.constrainAs(mainContent) {
-                top.linkTo(parent.top)
-                end.linkTo(parent.end)
-                start.linkTo(parent.start)
-                bottom.linkTo(bottomButtonList.top)
-                height = Dimension.fillToConstraints
-            },
-            tokenList)
-
-
-        BottomButtonList(
-            modifier = mainModifier
-                .padding(bottom = 10.dp)
-                .constrainAs(bottomButtonList) {
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    height = Dimension.wrapContent
-
-                },
-            navigateToBuyToken = navigateToBuyToken,
-            navigateToStakeToken = navigateToStakeToken,
-            navigateToSwapToken = navigateToSwapToken,
-            navigateToReceiveToken = navigateToReceiveToken,
-            navigateToSendToken = navigateToSendToken,
-        )
-        if (isMenuShowing) {
-
-            Box(modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.background.copy(alpha = 0.5f))
-                .clickable(
-                    interactionSource = MutableInteractionSource(),
-                    indication = null,
-                    onClick = {}
-                )) {}
-        }
-        val configuration = LocalConfiguration.current
-        val screenHeight = configuration.screenHeightDp.dp
-        val maxMenuHeightDp = screenHeight-topMenuIconSize - topMenuArrowSize - 80.dp
-        val animatedMenuHeightDp: Dp by animateDpAsState(targetValue = if (isMenuShowing) maxMenuHeightDp else 0.dp)
-        val animatedMenuArrowRotationDegree: Float by animateFloatAsState(targetValue = if (isMenuShowing) 90f else 270f)
-        TopMenuIndicators(
-            Modifier.constrainAs(topMenu) {
-                top.linkTo(menuBox.bottom)
-                end.linkTo(parent.end)
-                start.linkTo(parent.start)
-                height = Dimension.wrapContent
-
-            },
-            onMenuClick = onMenuClick,
-        rotateDegree =animatedMenuArrowRotationDegree)
-        if (isMenuShowing || animatedMenuHeightDp>15.dp) {
-
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val mainModifier = Modifier.padding(horizontal = 9.dp)
+    BackdropScaffold(
+        scaffoldState = scaffoldState,
+        appBar = {
+            DuckTopAppBar(title = stringResource(id = R.string.screen_title_home).uppercase(),
+                navigationIcon = {})
+        }, backLayerContent = {
             TopMenu(
                 modifier = Modifier
                     .background(MaterialTheme.colors.primary.copy(alpha = 0.36f))
-                    .constrainAs(menuBox) {
-                        top.linkTo(parent.top)
-                    }
-                    .fillMaxWidth()
-                    .height(animatedMenuHeightDp),
-                onMenuItemClick = onMenuItemClick)
+                    .fillMaxWidth(),
+                onMenuItemClick = onMenuItemClick
+            )
+        },
+        frontLayerContent = {
+            val frontLayerState = scaffoldState.currentValue
+            val animatedMenuArrowRotationDegree: Float by animateFloatAsState(targetValue = if (frontLayerState == BackdropValue.Revealed) 90f else 270f)
+            Column {
+                TopMenuIndicators(
+                    modifier = Modifier.fillMaxWidth(),
+                    onMenuClick = onMenuClick,
+                    rotateDegree = animatedMenuArrowRotationDegree,
+                    navigateToLock = navigateToLock,
+                    navigateToChangeAvatar = navigateToChangeAvatar,
+                )
+                MainContent(
+                    mainModifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    tokenList,
+                    navigateToNotification = navigateToNotification,
+                    navigateToSearch = navigateToSearch,
+
+                    navigateToAddWallet = navigateToAddWallet,
+                )
+                BottomButtonList(
+                    modifier = mainModifier
+                        .padding(bottom = 10.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    navigateToBuyToken = navigateToBuyToken,
+                    navigateToStakeToken = navigateToStakeToken,
+                    navigateToSwapToken = navigateToSwapToken,
+                    navigateToReceiveToken = navigateToReceiveToken,
+                    navigateToSendToken = navigateToSendToken,
+                )
+            }
+
+
+        }) {
+        AnimatedVisibility(visible = isEntranceDialogShowing) {
+            DialogBoxEntranceCongratulations(onDismiss = { onDialogDismiss.invoke(true) },
+                descriptionText = entranceMessage)
         }
-
-
-        AnimatedVisibility(visible =isEntranceDialogShowing ) {
-            DialogBoxEntranceCongratulations(onDismiss ={onDialogDismiss.invoke(true)} , descriptionText = entranceMessage)
-        }
-
     }
 
 
     when (uiState) {
         HomeUiState.Nothing, HomeUiState.Loading -> {
-            isMenuShowing = false
+//            isMenuShowing = false
             isEntranceDialogShowing= false
         }
 
         is HomeUiState.Failure -> {
             onFailureOccurred(uiState.exception)
         }
+
         HomeUiState.NavToBuy -> {
             navigateToBuyToken.invoke()
         }
+
         HomeUiState.NavToReceive -> {
             navigateToReceiveToken.invoke()
         }
+
         HomeUiState.NavToSend -> {
             navigateToSendToken.invoke()
         }
+
         HomeUiState.NavToStake -> {
             navigateToStakeToken.invoke()
         }
+
         HomeUiState.NavToSwap -> {
             navigateToSwapToken.invoke()
         }
+
         HomeUiState.TopMenuIsShowing -> {
-            isMenuShowing = true
+//            isMenuShowing = true
         }
+
         HomeUiState.WalletCreated -> {
             isEntranceDialogShowing= true
             entranceMessage = stringResource(id = R.string.wallet_create_message_description)
         }
+
         HomeUiState.WalletImported -> {
             isEntranceDialogShowing= true
             entranceMessage = stringResource(id = R.string.wallet_import_message_description)
         }
+
         HomeUiState.FirstTimeVisitTour -> {
             isEntranceDialogShowing= false
             // show tutorial for first time
@@ -300,13 +285,23 @@ fun TopMenu(
 
 
 @Composable
-fun MainContent(modifier: Modifier, tokenList: List<TokenInfo>) {
+private fun MainContent(
+    modifier: Modifier,
+    tokenList: List<TokenInfo>,
+    navigateToNotification: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToAddWallet: () -> Unit
+) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(start = 0.dp, top = 60.dp, end = 0.dp, bottom = 0.dp),
     ) {
         item {
-            MainWalletInfo()
+            MainWalletInfo(
+                navigateToNotification = navigateToNotification,
+                navigateToSearch = navigateToSearch,
+                navigateToAddWallet = navigateToAddWallet,
+            )
         }
         item {
             MainListButton()
@@ -451,7 +446,11 @@ fun MainListButton() {
 }
 
 @Composable
-fun MainWalletInfo() {
+fun MainWalletInfo(
+    navigateToNotification: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToAddWallet: () -> Unit
+) {
 
     Box(
         modifier = Modifier
@@ -470,6 +469,9 @@ fun MainWalletInfo() {
             painter = painterResource(id = R.drawable.ic_mail),
             contentDescription = null,
             modifier = Modifier
+                .clickable {
+                    navigateToNotification.invoke()
+                }
                 .width(mainIconSize)
                 .height(mainIconSize)
                 .align(Alignment.TopEnd),
@@ -478,6 +480,9 @@ fun MainWalletInfo() {
             painter = painterResource(id = R.drawable.ic_search),
             contentDescription = null,
             modifier = Modifier
+                .clickable {
+                    navigateToSearch.invoke()
+                }
                 .width(mainIconSize)
                 .height(mainIconSize)
                 .align(Alignment.CenterEnd),
@@ -487,6 +492,9 @@ fun MainWalletInfo() {
             painter = painterResource(id = R.drawable.ic_add_wallet),
             contentDescription = null,
             modifier = Modifier
+                .clickable {
+                 navigateToAddWallet.invoke()
+                }
                 .width(mainIconSize)
                 .height(mainIconSize)
                 .align(Alignment.BottomEnd),
@@ -519,7 +527,9 @@ fun MainWalletInfo() {
 fun TopMenuIndicators(
     modifier: Modifier,
     onMenuClick: () -> Unit,
-    rotateDegree: Float
+    rotateDegree: Float,
+    navigateToLock: () -> Unit,
+    navigateToChangeAvatar: () -> Unit,
 ) {
     Column(
         modifier = modifier.clickable(
@@ -559,6 +569,9 @@ fun TopMenuIndicators(
                     painter = painterResource(id = R.drawable.ic_home_topmenu_man),
                     contentDescription = null,
                     modifier = Modifier
+                        .clickable {
+                         navigateToChangeAvatar.invoke()
+                        }
                         .width(topMenuIconSize)
                         .height(topMenuIconSize),
                 )
@@ -566,6 +579,9 @@ fun TopMenuIndicators(
                     painter = painterResource(id = R.drawable.ic_home_topmenu_lock),
                     contentDescription = null,
                     modifier = Modifier
+                        .clickable {
+                         navigateToLock.invoke()
+                        }
                         .width(topMenuIconSize)
                         .height(topMenuIconSize),
                 )
@@ -654,10 +670,12 @@ fun DialogBoxEntranceCongratulations(
                         textAlign = TextAlign.Center
                     )
                     Image(
+                        modifier = Modifier.fillMaxWidth(),
                         painter = painterResource(id = imageDrawableId),
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.FillWidth,
                         alignment = Alignment.BottomCenter,
-                        contentDescription =titleText )
+                        contentDescription = titleText
+                    )
                 }
 
                 MainButton(

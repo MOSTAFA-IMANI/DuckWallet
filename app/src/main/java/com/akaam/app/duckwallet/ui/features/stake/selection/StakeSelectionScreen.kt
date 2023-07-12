@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +39,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.domain.models.TokenInfo
 import com.akaam.app.duckwallet.ui.features.stake.StakeViewModel
+import com.akaam.app.duckwallet.ui.theme.ActionScaffold
 import com.akaam.app.duckwallet.ui.theme.FullScreenTokenListDialog
 import com.akaam.app.duckwallet.ui.theme.MainButton
 import com.akaam.app.duckwallet.ui.theme.MainEditText
@@ -90,6 +90,54 @@ fun StakeSelectionScreen(
     tokenList: List<TokenInfo>,
     setSendingTokenInfo: KFunction1<TokenInfo, Unit>,
 ) {
+
+
+    ActionScaffold(appBarTitle = stringResource(id = R.string.screen_title_stake).uppercase(),
+    actionContent = {
+
+        MainButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
+            onClick = { onNextStepClick.invoke() },
+            text = stringResource(id = R.string.next_step),
+            isTheMainBottomButton = true,
+            isSecondory = true
+        )
+
+    }) {
+
+        MainStakeContent(
+
+            sendingTokenInfo,
+            amount,
+            onAmountUpdate,
+            amountInDollar,
+            onEnergyClicked,
+            onBandwidthClicked,
+            tokenList,
+            setSendingTokenInfo
+        )
+    }
+
+
+    when (uiState) {
+        StakeSelectionUiState.Nothing -> {}
+    }
+}
+
+@Composable
+private fun MainStakeContent(
+
+    sendingTokenInfo: TokenInfo?,
+    amount: Double,
+    onAmountUpdate: KFunction1<String, Unit>,
+    amountInDollar: String,
+    onEnergyClicked: () -> Unit,
+    onBandwidthClicked: () -> Unit,
+    tokenList: List<TokenInfo>,
+    setSendingTokenInfo: (TokenInfo) -> Unit,
+) {
     var confirmDialogShowingState by remember { mutableStateOf(false) }
 
     if (confirmDialogShowingState) {
@@ -104,15 +152,8 @@ fun StakeSelectionScreen(
             },
         )
     }
+    Column {
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-
-        Spacer(modifier = Modifier.height(5.dp))
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.surface)
@@ -121,7 +162,7 @@ fun StakeSelectionScreen(
         ) {
 
             TokenSelectingBox(
-                onClickAction = {confirmDialogShowingState =true},
+                onClickAction = { confirmDialogShowingState = true },
                 value = sendingTokenInfo?.name ?: "",
                 hint = stringResource(id = R.string.select_token),
                 label = stringResource(id = R.string.token_info_title).uppercase(),
@@ -167,7 +208,6 @@ fun StakeSelectionScreen(
                     )
                 })
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -221,7 +261,6 @@ fun StakeSelectionScreen(
                 color = MaterialTheme.colors.primary
             )
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -244,26 +283,6 @@ fun StakeSelectionScreen(
             ArrowIcon()
             GetBox(boxModifier2)
         }
-
-
-        MainButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 40.dp, start = 30.dp, end = 30.dp),
-            onClick = { onNextStepClick.invoke() },
-            text = stringResource(id = R.string.next_step),
-            isTheMainBottomButton = true,
-            isSecondory = true
-        )
-
-    }
-
-
-
-
-
-    when (uiState) {
-        StakeSelectionUiState.Nothing -> {}
     }
 }
 

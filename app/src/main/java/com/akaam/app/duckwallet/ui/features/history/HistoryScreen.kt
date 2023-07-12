@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.ui.theme.ClickableText
+import com.akaam.app.duckwallet.ui.theme.ProfileScaffold
 
 
 @Composable
@@ -45,21 +46,22 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
    ) {
     val columnTitleModifier = Modifier.wrapContentWidth()
+    ProfileScaffold(appBarTitle = stringResource(id = R.string.screen_title_history).uppercase()) {
+        Column(
+            modifier = modifier.fillMaxSize().padding(horizontal = 5.dp, vertical = 16.dp),
 
-    Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 5.dp, vertical = 16.dp),
+            ) {
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround) {
+                ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_all).uppercase(), onClick =allTabClicked )
+                ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_send).uppercase(), onClick =sendTabClicked )
+                ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_receive).uppercase(), onClick =receiveTabClicked )
+                ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_stake).uppercase(), onClick =stakeTabClicked )
+            }
+            Divider(modifier = Modifier.padding(horizontal = 5.dp, vertical = 10.dp),color = MaterialTheme.colors.primary, thickness = 1.dp)
 
-    ) {
-        Row(modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround) {
-            ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_all).uppercase(), onclick =allTabClicked )
-            ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_send).uppercase(), onclick =sendTabClicked )
-            ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_receive).uppercase(), onclick =receiveTabClicked )
-            ClickableText(modifier = columnTitleModifier ,text = stringResource(id = R.string.history_tab_stake).uppercase(), onclick =stakeTabClicked )
         }
-        Divider(modifier = Modifier.padding(horizontal = 5.dp, vertical = 10.dp),color = MaterialTheme.colors.primary, thickness = 1.dp)
-
     }
 
     when (uiState) {
@@ -70,6 +72,7 @@ fun HistoryScreen(
         HistoryUiState.StakeTabSelected ->{}
     }
 }
+
 
 
 

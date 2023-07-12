@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.akaam.app.duckwallet.R
 import com.akaam.app.duckwallet.ui.theme.MainButton
+import com.akaam.app.duckwallet.ui.theme.WelcomeScaffold
 
 
 @Composable
@@ -53,39 +54,45 @@ fun WelcomeScreen(
     onFailureOccurred: @Composable (Throwable) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(Modifier.weight(1f))
-        Image(modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = R.drawable.ic_duck_search), contentDescription ="" )
+    WelcomeScaffold(
+        appBarTitle = stringResource(id = R.string.screen_title_welcome).uppercase(),
 
-        MainButton(
-            onClick = { navigateToCreateWallet()},
-            text = stringResource(id =  R.string.create_wallet_button_title),
-            description = stringResource(id =  R.string.create_wallet_button_description),)
-        Spacer(Modifier.weight(0.25f))
-        MainButton(
-            onClick = { navigateToImportWallet() },
-            text = stringResource(id =  R.string.import_wallet_button_title),
-            description = stringResource(id =  R.string.import_wallet_button_description),)
-        Spacer(Modifier.weight(0.25f))
+    ){
 
-        MainButton(
-            onClick = { navigateToPairLedger() },
-            isSecondory = true,
-            text = stringResource(id =  R.string.pair_ledger_button_title),
-            description = stringResource(id =  R.string.pair_ledger_button_description),)
-        Spacer(Modifier.weight(0.25f))
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(Modifier.weight(0.2f))
+            Image(modifier = Modifier.fillMaxWidth().weight(0.4f),
+                painter = painterResource(id = R.drawable.ic_duck_search), contentDescription ="" )
 
-        MainButton(
-            onClick = { navigateToWatchWallet() },
-            isSecondory = true,
-            text = stringResource(id =  R.string.watch_wallet_button_title),
-            description = stringResource(id =  R.string.watch_wallet_button_description),)
-        Spacer(Modifier.weight(1f))
+            MainButton(
+                onClick = { navigateToCreateWallet()},
+                text = stringResource(id =  R.string.create_wallet_button_title).uppercase(),
+                description = stringResource(id =  R.string.create_wallet_button_description),)
+            Spacer(Modifier.weight(0.05f))
+            MainButton(
+                onClick = { navigateToImportWallet() },
+                text = stringResource(id =  R.string.import_wallet_button_title).uppercase(),
+                description = stringResource(id =  R.string.import_wallet_button_description),)
+            Spacer(Modifier.weight(0.05f))
+
+            MainButton(
+                onClick = { navigateToPairLedger() },
+                isSecondory = true,
+                text = stringResource(id =  R.string.pair_ledger_button_title).uppercase(),
+                description = stringResource(id =  R.string.pair_ledger_button_description),)
+            Spacer(Modifier.weight(0.05f))
+
+            MainButton(
+                onClick = { navigateToWatchWallet() },
+                isSecondory = true,
+                text = stringResource(id =  R.string.watch_wallet_button_title).uppercase(),
+                description = stringResource(id =  R.string.watch_wallet_button_description),)
+            Spacer(Modifier.weight(0.25f))
+        }
     }
 
     when (uiState) {
@@ -98,5 +105,6 @@ fun WelcomeScreen(
         }
     }
 }
+
 
 
